@@ -1,0 +1,140 @@
+﻿@using dotnet_mvc_car_wash.Models.Enums
+@model dotnet_mvc_car_wash.Models.CarWash
+@{
+    ViewData["Title"] = "Editar Lavado";
+}
+<h2>Editar Lavado</h2>
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly"></div>
+    <input type="hidden" asp-for="IdCarWash" />
+    <input type="hidden" asp-for="CreationDate" />
+
+    <div>
+        <label asp-for="IdCarWash"></label>
+        <input asp-for="IdCarWash" readonly />
+        <span asp-validation-for="IdCarWash"></span>
+    </div>
+
+    <div>
+        <label asp-for="VehicleLicensePlate"></label>
+        <input asp-for="VehicleLicensePlate" />
+        <span asp-validation-for="VehicleLicensePlate"></span>
+    </div>
+
+    <div>
+        <label asp-for="IdClient"></label>
+        <input asp-for="IdClient" />
+        <span asp-validation-for="IdClient"></span>
+    </div>
+
+    <div>
+        <label asp-for="IdEmployee"></label>
+        <input asp-for="IdEmployee" />
+        <span asp-validation-for="IdEmployee"></span>
+    </div>
+
+    <div>
+        <label asp-for="WashType"></label>
+        <select asp-for="WashType" asp-items="Html.GetEnumSelectList<WashType>()" id="tipoLavadoSelect">
+            <option value="">-- Seleccione un tipo --</option>
+        </select>
+        <span asp-validation-for="WashType"></span>
+    </div>
+
+    <div id="precioAConvenirDiv" style="display: none;">
+        <label asp-for="PricetoAgree"></label>
+        <input asp-for="PricetoAgree" type="number" step="0.01" min="0" />
+        <span asp-validation-for="PricetoAgree"></span>
+        <small>Ingrese el precio acordado con el cliente (sin IVA)</small>
+    </div>
+
+    <div>
+        <label asp-for="WashStatus"></label>
+        <select asp-for="WashStatus" asp-items="Html.GetEnumSelectList<WashStatus>()">
+            <option value="">-- Seleccione un estado --</option>
+        </select>
+        <span asp-validation-for="WashStatus"></span>
+    </div>
+
+    <div>
+        <label asp-for="Observations"></label>
+        <textarea asp-for="Observations" rows="3"></textarea>
+        <span asp-validation-for="Observations"></span>
+    </div>
+
+    <div>
+        <label>Fecha de Creación:</label>
+        <span>@Model.CreationDate.ToString("dd/MM/yyyy HH:mm")</span>
+    </div>
+
+    @if (Model.BasePrice > 0)
+    {
+        <div>
+            <h4>Información de Precios Actuales:</h4>
+            <p><strong>Precio Base:</strong> ₡@Model.BasePrice.ToString("N0")</p>
+            <p><strong>IVA (13%):</strong> ₡@Model.IVA.ToString("N0")</p>
+            <p><strong>Precio Total:</strong> ₡@Model.TotalPrice.ToString("N0")</p>
+            <p><em>Los precios se recalcularán automáticamente si cambia el tipo de lavado</em></p>
+        </div>
+    }
+
+    <div>
+        <p><strong>Precios por tipo de lavado:</strong></p>
+        <ul>
+            @foreach (var tipo in Enum.GetValues<WashType>())
+            {
+                var tempLavado = new dotnet_mvc_car_wash.Models.CarWash { WashType = tipo };
+                tempLavado.CalculatePrices();
+                <li>
+                    <strong>@tipo:</strong>
+                    @if (tempLavado.BasePrice > 0)
+                    {
+                        <text>₡@tempLavado.BasePrice.ToString("N0") - </text>
+                    }
+                    else
+                    {
+                        <text>A convenir - </text>
+                    }
+                    @tempLavado.GetTipoLavadoDescripcion()
+                </li>
+            }
+        </ul>
+        <p><em>Los precios mostrados no incluyen IVA (13%)</em></p>
+    </div>
+
+    <div>
+        <input type="submit" value="Guardar Cambios" />
+        <a asp-action="Index">Volver a la lista</a> |
+        <a asp-action="Details" asp-route-id="@Model.IdCarWash">Ver Detalles</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById('tipoLavadoSelect').addEventListener('change', function() {
+            var tipoLavado = this.value;
+            var precioAConvenirDiv = document.getElementById('precioAConvenirDiv');
+            var precioAConvenirInput = document.querySelector('input[name="PrecioAConvenir"]');
+
+            if (tipoLavado === '3') { // 3 corresponde a LaJoya en el enum
+                precioAConvenirDiv.style.display = 'block';
+                precioAConvenirInput.setAttribute('required', 'required');
+            } else {
+                precioAConvenirDiv.style.display = 'none';
+                precioAConvenirInput.removeAttribute('required');
+                precioAConvenirInput.value = '';
+            }
+        });
+
+        // Verificar el estado inicial en caso de que ya tenga un valor seleccionado
+        document.addEventListener('DOMContentLoaded', function() {
+            var tipoLavadoSelect = document.getElementById('tipoLavadoSelect');
+            var event = new Event('change');
+            tipoLavadoSelect.dispatchEvent(event);
+        });
+    </script>
+}

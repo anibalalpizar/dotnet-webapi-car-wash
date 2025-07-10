@@ -1,0 +1,103 @@
+﻿@model IEnumerable<dotnet_mvc_car_wash.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<!-- Sección de búsqueda -->
+<div class="mb-3">
+    <form method="get" asp-action="Index" class="d-flex">
+        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm"
+               class="form-control me-2" placeholder="Search vehicle..."
+               style="max-width: 300px;">
+        <button class="btn btn-primary me-2" type="submit">Search</button>
+        @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+        {
+            <a asp-action="Index" class="btn btn-secondary me-2">Clear</a>
+        }
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+    </form>
+</div>
+
+<!-- Información de resultados -->
+@if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+{
+    <div class="alert alert-info">
+        Fonded @ViewBag.FilteredCount de @ViewBag.VehicleCount vehicles
+        that match with "<strong>@ViewBag.SearchTerm</strong>"
+    </div>
+}
+
+<!-- Mensaje cuando no hay resultados -->
+@if (Model != null && !Model.Any() && !string.IsNullOrEmpty(ViewBag.SearchTerm))
+{
+    <div class="alert alert-warning">
+        <strong>No vehicles found</strong><br>
+        No vehicles found that match with the term "<strong>@ViewBag.SearchTerm</strong>"
+        <br><a asp-action="Index" class="btn btn-primary btn-sm mt-2">View all vehicles</a>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LicensePlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Traction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastServiceDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasNanoCeramicTreatment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LicensePlate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Traction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastServiceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasNanoCeramicTreatment)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.LicensePlate }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.LicensePlate }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.LicensePlate })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

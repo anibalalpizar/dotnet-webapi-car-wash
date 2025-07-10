@@ -1,0 +1,109 @@
+﻿@model IEnumerable<dotnet_mvc_car_wash.Models.Customer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<!-- Search section -->
+<div class="mb-3">
+    <form method="get" asp-action="Index" class="d-flex">
+        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm"
+               class="form-control me-2" placeholder="Search customer..."
+               style="max-width: 300px;">
+        <button class="btn btn-primary me-2" type="submit">Search</button>
+        @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+        {
+            <a asp-action="Index" class="btn btn-secondary me-2">Clear</a>
+        }
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+    </form>
+</div>
+
+<!-- Result information -->
+@if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+{
+    <div class="alert alert-info">
+        Founded @ViewBag.FilteredCount de @ViewBag.CustomerCount customers
+        that match with "<strong>@ViewBag.SearchTerm</strong>"
+    </div>
+}
+
+<!-- Message when no results -->
+@if (Model != null && !Model.Any() && !string.IsNullOrEmpty(ViewBag.SearchTerm))
+{
+    <div class="alert alert-warning">
+        <strong>No customers found</strong><br>
+        No customer found that match with the term "<strong>@ViewBag.SearchTerm</strong>"
+        <br><a asp-action="Index" class="btn btn-primary btn-sm mt-2">View all customers</a>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Province)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Canton)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.District)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExactAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WashPreference)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Province)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Canton)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.District)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExactAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WashPreference)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdNumber }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdNumber }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdNumber })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

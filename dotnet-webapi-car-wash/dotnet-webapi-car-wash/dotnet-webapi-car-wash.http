@@ -1,0 +1,6 @@
+@dotnet_webapi_car_wash_HostAddress = http://localhost:5138
+
+GET {{dotnet_webapi_car_wash_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

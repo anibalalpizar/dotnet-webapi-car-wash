@@ -1,0 +1,102 @@
+﻿@model IEnumerable<dotnet_mvc_car_wash.Models.Employee>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<!-- Search section -->
+<div class="mb-3">
+    <form method="get" asp-action="Index" class="d-flex">
+        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm"
+               class="form-control me-2" placeholder="Search employee..."
+               style="max-width: 300px;">
+        <button class="btn btn-primary me-2" type="submit">Search</button>
+        @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+        {
+            <a asp-action="Index" class="btn btn-secondary me-2">Clear</a>
+        }
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+    </form>
+</div>
+
+<!-- Result information -->
+@if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+{
+    <div class="alert alert-info">
+        Founded @ViewBag.FilteredCount de @ViewBag.EmployeeCount employees
+        that match with "<strong>@ViewBag.SearchTerm</strong>"
+    </div>
+}
+
+<!-- Message when no results -->
+@if (Model != null && !Model.Any() && !string.IsNullOrEmpty(ViewBag.SearchTerm))
+{
+    <div class="alert alert-warning">
+        <strong>No employees found</strong><br>
+        No employees found that match with the term "<strong>@ViewBag.SearchTerm</strong>"
+        <br><a asp-action="Index" class="btn btn-primary btn-sm mt-2">View all employees</a>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HireDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DailySalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccumulatedVacationDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TerminationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SeveranceAmount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HireDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DailySalary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccumulatedVacationDays)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TerminationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeveranceAmount)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

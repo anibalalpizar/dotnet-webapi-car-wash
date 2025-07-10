@@ -1,0 +1,66 @@
+﻿<!-- Views/Lavado/Index.cshtml -->
+@model List<dotnet_mvc_car_wash.Models.CarWash>
+
+@{
+    ViewData["Title"] = "Lavados";
+}
+
+<h2>Lavados</h2>
+
+<p>
+    <a asp-action="Create">Crear Nuevo Lavado</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div>
+        <label for="searchTerm">Buscar:</label>
+        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" />
+        <input type="submit" value="Buscar" />
+        <a asp-action="Index">Limpiar</a>
+    </div>
+</form>
+
+<p>
+    Total de lavados: @ViewBag.LavadoCount | Filtrados: @ViewBag.FilteredCount
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().VehicleLicensePlate)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().WashType)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().BasePrice)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().IVA)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TotalPrice)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().WashStatus)</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.VehicleLicensePlate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.WashType)</td>
+                    <td>₡@item.BasePrice.ToString("N0")</td>
+                    <td>₡@item.IVA.ToString("N0")</td>
+                    <td>₡@item.TotalPrice.ToString("N0")</td>
+                    <td>@Html.DisplayFor(modelItem => item.WashStatus)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IdCarWash">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.IdCarWash">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IdCarWash">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="11">No hay lavados registrados</td>
+            </tr>
+        }
+    </tbody>
+</table>
