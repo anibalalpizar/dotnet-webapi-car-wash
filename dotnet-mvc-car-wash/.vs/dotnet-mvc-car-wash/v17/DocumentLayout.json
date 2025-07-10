@@ -1,7 +1,12 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|c:\\users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\services\\serviceemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|solutionrelative:dotnet-mvc-car-wash\\services\\serviceemployee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +14,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ServiceEmployee.cs",
+              "DocumentMoniker": "C:\\Users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Services\\ServiceEmployee.cs",
+              "RelativeDocumentMoniker": "dotnet-mvc-car-wash\\Services\\ServiceEmployee.cs",
+              "ToolTip": "C:\\Users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Services\\ServiceEmployee.cs",
+              "RelativeToolTip": "dotnet-mvc-car-wash\\Services\\ServiceEmployee.cs",
+              "ViewState": "AgIAAKoAAAAAAAAAAAAkwLwAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-10T04:16:15.235Z",
+              "EditorCaption": ""
             }
           ]
         }

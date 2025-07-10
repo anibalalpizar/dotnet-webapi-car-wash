@@ -453,11 +453,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\anibal\\Desktop\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash.csproj",
+      "projectUniqueName": "C:\\Users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash.csproj",
       "projectName": "dotnet-webapi-car-wash",
-      "projectPath": "C:\\Users\\anibal\\Desktop\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash.csproj",
+      "projectPath": "C:\\Users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash.csproj",
       "packagesPath": "C:\\Users\\anibal\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\anibal\\Desktop\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\obj\\",
+      "outputPath": "C:\\Users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\dotnet-webapi-car-wash\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,24 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|d:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|solutionrelative:dotnet-mvc-car-wash\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|d:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\controllers\\vehiclecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|solutionrelative:dotnet-mvc-car-wash\\controllers\\vehiclecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|d:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|solutionrelative:dotnet-mvc-car-wash\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|d:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\models\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{79E6F1A2-30C7-45B1-9E56-2EB852012A34}|dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj|solutionrelative:dotnet-mvc-car-wash\\models\\vehicle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -26,56 +9,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": -1,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CustomerController.cs",
-              "DocumentMoniker": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Controllers\\CustomerController.cs",
-              "RelativeDocumentMoniker": "dotnet-mvc-car-wash\\Controllers\\CustomerController.cs",
-              "ToolTip": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Controllers\\CustomerController.cs",
-              "RelativeToolTip": "dotnet-mvc-car-wash\\Controllers\\CustomerController.cs",
-              "ViewState": "AgIAAK4AAAAAAAAAAAAkwM0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-09T04:35:55.833Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VehicleController.cs",
-              "DocumentMoniker": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Controllers\\VehicleController.cs",
-              "RelativeDocumentMoniker": "dotnet-mvc-car-wash\\Controllers\\VehicleController.cs",
-              "ToolTip": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Controllers\\VehicleController.cs",
-              "RelativeToolTip": "dotnet-mvc-car-wash\\Controllers\\VehicleController.cs",
-              "ViewState": "AgIAAK4AAAAAAAAAAAAkwM0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-09T04:35:50.868Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Vehicle.cs",
-              "DocumentMoniker": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Models\\Vehicle.cs",
-              "RelativeDocumentMoniker": "dotnet-mvc-car-wash\\Models\\Vehicle.cs",
-              "ToolTip": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Models\\Vehicle.cs",
-              "RelativeToolTip": "dotnet-mvc-car-wash\\Models\\Vehicle.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-09T04:33:45.768Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Customer.cs",
-              "DocumentMoniker": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Models\\Customer.cs",
-              "RelativeDocumentMoniker": "dotnet-mvc-car-wash\\Models\\Customer.cs",
-              "ToolTip": "D:\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\Models\\Customer.cs",
-              "RelativeToolTip": "dotnet-mvc-car-wash\\Models\\Customer.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAgwCEAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-09T04:33:28.328Z"
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         }

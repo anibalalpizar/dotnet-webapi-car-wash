@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dotnet-mvc-car-wash")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a574e6522ab6454d864182143990ca683a2bc23b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dca4aacb5099fb6a5aebf97f532f8d0ef40a4a00")]
 [assembly: System.Reflection.AssemblyProductAttribute("dotnet-mvc-car-wash")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dotnet-mvc-car-wash")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

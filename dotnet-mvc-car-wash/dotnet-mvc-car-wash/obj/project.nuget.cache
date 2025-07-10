@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "p+meI4jZ7so=",
+  "dgSpecHash": "OKoKZiOQJfM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\anibal\\Desktop\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj",
+  "projectFilePath": "C:\\Users\\anibal\\dev\\dotnet-webapi-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash\\dotnet-mvc-car-wash.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\anibal\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\anibal\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
