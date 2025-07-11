@@ -1,49 +1,50 @@
 ﻿using dotnet_mvc_car_wash.Models;
-using Microsoft.AspNetCore.Http;
+using dotnet_mvc_car_wash.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace dotnet_mvc_car_wash.Controllers
 {
     public class VehicleController : Controller
     {
-        private static List<Vehicle> vehicles = new List<Vehicle>();
+        private readonly IServiceVehicle serviceVehicle;
+
+        public VehicleController(IServiceVehicle serviceVehicle)
+        {
+            this.serviceVehicle = serviceVehicle;
+        }
 
         // GET: VehicleController
-        public ActionResult Index(string searchTerm)
+        public async Task<ActionResult> Index(string searchTerm)
         {
-            var filteredVehicles = vehicles;
-
-            if (!string.IsNullOrEmpty(searchTerm))
+            try
             {
-                // Filter vehicles based on search term
-                filteredVehicles = vehicles.Where(v =>
-                    v.LicensePlate.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    v.Brand.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    v.Model.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    v.Traction.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    v.Color.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    (v.LastServiceDate?.ToString("dd/MM/yyyy").Contains(searchTerm) ?? false) ||
-                    (v.HasNanoCeramicTreatment.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
-                ).ToList();
+                List<Vehicle> list = await serviceVehicle.Get();
+                return View(list);
             }
-
-            ViewBag.SearchTerm = searchTerm;
-            ViewBag.VehicleCount = vehicles.Count;
-            ViewBag.FilteredCount = filteredVehicles.Count;
-
-            return View(filteredVehicles);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading vehicle: " + ex.Message;
+                return View(new List<Vehicle>());
+            }
         }
 
         // GET: VehicleController/Details/5
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
-            var vehicle = GetVehicleById(id);
-            if (vehicle == null)
+            try
             {
-                return NotFound();
+                var vehicle = await serviceVehicle.GetById(id);
+                if (vehicle == null)
+                {
+                    return NotFound();
+                }
+                return View(vehicle);
             }
-            return View(vehicle);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading vehicle details: " + ex.Message;
+                return View();
+            }
         }
 
         // GET: VehicleController/Create
@@ -55,152 +56,119 @@ namespace dotnet_mvc_car_wash.Controllers
         // POST: VehicleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Vehicle vehicle)
+        public async Task<ActionResult> Create(Vehicle vehicle)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var existingVehicle = GetVehicleById(vehicle.LicensePlate);
-                    if (existingVehicle == null)
-                    {
-                        vehicles.Add(vehicle);
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "A vehicle with that license plate already exists.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (not implemented here)
-                ModelState.AddModelError("", "An error occurred while creating the vehicle: " + ex.Message);
-            }
-            return View(vehicle);
-        }
-
-        // GET: VehicleController/Edit/5
-        public ActionResult Edit(string id)
-        {
-            var vehicle = GetVehicleById(id);
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
-            return View(vehicle);
-        }
-
-        // POST: VehicleController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, Vehicle vehicle)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    vehicle.LicensePlate = id; // Ensure the license plate remains the same
-                    bool success = UpdateVehicle(vehicle);
+                    bool success = await serviceVehicle.Save(vehicle);
                     if (success)
                     {
                         return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        ModelState.AddModelError("", "An error occurred while updating the vehicle.");
+                        ModelState.AddModelError("", "Could not create vehicle.");
                     }
-
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while updating the vehicle.");
+                ModelState.AddModelError("", "Error creating vehicle: " + ex.Message);
+            }
+            return View(vehicle);
+        }
+
+        // GET: VehicleController/Edit/5
+        public async Task<ActionResult> Edit(string id)
+        {
+            try
+            {
+                var vehicle = await serviceVehicle.GetById(id);
+                if (vehicle == null)
+                {
+                    return NotFound();
+                }
+                return View(vehicle);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading vehicle for editing: " + ex.Message;
+                return View();
+            }
+        }
+
+        // POST: VehicleController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(string id, Vehicle vehicle)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    vehicle.LicensePlate = id; // Ensure license plate doesn't change
+                    bool success = await serviceVehicle.Update(vehicle);
+                    if (success)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Could not update vehicle.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error updating vehicle: " + ex.Message);
             }
             return View(vehicle);
         }
 
         // GET: VehicleController/Delete/5
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
-            var vehicle = GetVehicleById(id);
-            if (vehicle == null)
+            try
             {
-                return NotFound();
+                var vehicle = await serviceVehicle.GetById(id);
+                if (vehicle == null)
+                {
+                    return NotFound();
+                }
+                return View(vehicle);
             }
-            return View(vehicle);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading vehicle for deletion: " + ex.Message;
+                return View();
+            }
         }
 
         // POST: VehicleController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
-                bool success = DeleteVehicle(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        private Vehicle GetVehicleById(string id)
-        {
-            Vehicle vechicle = null;
-            foreach (var veh in vehicles)
-            {
-                if (veh.LicensePlate == id)
+                bool success = await serviceVehicle.Delete(id);
+                if (!success)
                 {
-                    vechicle = veh;
-                    break;
+                    TempData["ErrorMessage"] = "Could not delete vehicle.";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Vehicle deleted successfully.";
                 }
             }
-            return vechicle;
-        }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error deleting vehicle: " + ex.Message;
+            }
 
-        private bool UpdateVehicle(Vehicle updatedVehicle)
-        {
-            bool success = false;
-            try
-            {
-                for (int i = 0; i < vehicles.Count; i++)
-                {
-                    if (vehicles[i].LicensePlate == updatedVehicle.LicensePlate)
-                    {
-                        vehicles[i] = updatedVehicle;
-                        success = true;
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                success = false;
-            }
-            return success;
-        }
-
-        private bool DeleteVehicle(string id)
-        {
-            bool success = false;
-            try
-            {
-                Vehicle vehicleToRemove = GetVehicleById(id);
-                if (vehicleToRemove != null)
-                {
-                    vehicles.Remove(vehicleToRemove);
-                    success = true;
-                }
-            }
-            catch
-            {
-                success = false;
-            }
-            return success;
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -24,6 +24,15 @@ builder.Services.AddHttpClient<IServiceCustomer, ServiceCustomer>(client =>
     ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
 });
 
+builder.Services.AddHttpClient<IServiceVehicle, ServiceVehicle>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7059/");
+})
+.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
