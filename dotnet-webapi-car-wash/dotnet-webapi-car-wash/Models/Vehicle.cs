@@ -25,5 +25,11 @@ namespace dotnet_webapi_car_wash.Models
 
         [Display(Name = "Nano Ceramic Treatment")]
         public bool HasNanoCeramicTreatment { get; set; }
+
+        [Required]
+        [Display(Name = "Customer")]
+        public string CustomerId { get; set; }
+
+        public Customer? Customer { get; set; }
     }
 }

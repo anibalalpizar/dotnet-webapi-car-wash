@@ -9,7 +9,7 @@ namespace dotnet_webapi_car_wash.Controllers
     public class CustomerController : ControllerBase
     {
         // Static list to store customers in memory
-        private static List<Customer> customers = new List<Customer>
+        public static List<Customer> customers = new List<Customer>
         {
             new Customer
             {

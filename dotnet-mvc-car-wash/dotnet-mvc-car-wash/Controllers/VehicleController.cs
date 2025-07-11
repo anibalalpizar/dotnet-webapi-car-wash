@@ -1,16 +1,19 @@
 ﻿using dotnet_mvc_car_wash.Models;
 using dotnet_mvc_car_wash.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace dotnet_mvc_car_wash.Controllers
 {
     public class VehicleController : Controller
     {
         private readonly IServiceVehicle serviceVehicle;
+        private readonly IServiceCustomer serviceCustomer;
 
-        public VehicleController(IServiceVehicle serviceVehicle)
+        public VehicleController(IServiceVehicle serviceVehicle, IServiceCustomer serviceCustomer)
         {
             this.serviceVehicle = serviceVehicle;
+            this.serviceCustomer = serviceCustomer;
         }
 
         // GET: VehicleController
@@ -48,9 +51,18 @@ namespace dotnet_mvc_car_wash.Controllers
         }
 
         // GET: VehicleController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            return View();
+            try
+            {
+                await LoadCustomerSelectList();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading customers: " + ex.Message;
+                return View();
+            }
         }
 
         // POST: VehicleController/Create
@@ -77,6 +89,8 @@ namespace dotnet_mvc_car_wash.Controllers
             {
                 ModelState.AddModelError("", "Error creating vehicle: " + ex.Message);
             }
+
+            await LoadCustomerSelectList();
             return View(vehicle);
         }
 
@@ -90,6 +104,7 @@ namespace dotnet_mvc_car_wash.Controllers
                 {
                     return NotFound();
                 }
+                await LoadCustomerSelectList();
                 return View(vehicle);
             }
             catch (Exception ex)
@@ -124,6 +139,8 @@ namespace dotnet_mvc_car_wash.Controllers
             {
                 ModelState.AddModelError("", "Error updating vehicle: " + ex.Message);
             }
+
+            await LoadCustomerSelectList();
             return View(vehicle);
         }
 
@@ -169,6 +186,20 @@ namespace dotnet_mvc_car_wash.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task LoadCustomerSelectList()
+        {
+            try
+            {
+                var customers = await serviceCustomer.Get();
+                ViewBag.CustomerSelectList = new SelectList(customers, "IdNumber", "FullName");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.CustomerSelectList = new SelectList(new List<Customer>(), "IdNumber", "FullName");
+                ViewBag.ErrorMessage = "Error loading customers: " + ex.Message;
+            }
         }
     }
 }

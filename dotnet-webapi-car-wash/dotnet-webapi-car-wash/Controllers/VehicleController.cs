@@ -1,4 +1,5 @@
 ﻿using dotnet_webapi_car_wash.Models;
+using dotnet_webapi_car_wash.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_webapi_car_wash.Controllers
@@ -7,7 +8,8 @@ namespace dotnet_webapi_car_wash.Controllers
     [ApiController]
     public class VehicleController : ControllerBase
     {
-        // Static list to store vehicles in memory
+        private static List<Customer> customers = CustomerController.customers;
+
         private static List<Vehicle> vehicles = new List<Vehicle>
         {
             new Vehicle
@@ -18,7 +20,8 @@ namespace dotnet_webapi_car_wash.Controllers
                 Traction = "FWD",
                 Color = "Blue",
                 LastServiceDate = new DateTime(2024, 1, 15),
-                HasNanoCeramicTreatment = true
+                HasNanoCeramicTreatment = true,
+                CustomerId = "123456789"
             }
         };
 
@@ -32,7 +35,26 @@ namespace dotnet_webapi_car_wash.Controllers
                 {
                     return NotFound(new { message = "No vehicles found" });
                 }
-                return Ok(vehicles);
+
+                // Enrich vehicles with customer information
+                var enrichedVehicles = vehicles.Select(v =>
+                {
+                    var customer = customers.FirstOrDefault(c => c.IdNumber == v.CustomerId);
+                    return new Vehicle
+                    {
+                        LicensePlate = v.LicensePlate,
+                        Brand = v.Brand,
+                        Model = v.Model,
+                        Traction = v.Traction,
+                        Color = v.Color,
+                        LastServiceDate = v.LastServiceDate,
+                        HasNanoCeramicTreatment = v.HasNanoCeramicTreatment,
+                        CustomerId = v.CustomerId,
+                        Customer = customer
+                    };
+                }).ToList();
+
+                return Ok(enrichedVehicles);
             }
             catch (Exception ex)
             {
@@ -51,6 +73,11 @@ namespace dotnet_webapi_car_wash.Controllers
                 {
                     return NotFound(new { message = $"Vehicle with license plate '{id}' not found" });
                 }
+
+                // Enrich with customer information
+                var customer = customers.FirstOrDefault(c => c.IdNumber == vehicle.CustomerId);
+                vehicle.Customer = customer;
+
                 return Ok(vehicle);
             }
             catch (Exception ex)
@@ -75,16 +102,59 @@ namespace dotnet_webapi_car_wash.Controllers
                         v.Model.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                         v.Traction.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                         v.Color.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        v.CustomerId.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
                         (v.LastServiceDate?.ToString("dd/MM/yyyy").Contains(searchTerm) ?? false) ||
                         (v.HasNanoCeramicTreatment.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
                     ).ToList();
                 }
 
-                return Ok(filteredVehicles);
+                // Enrich with customer information
+                var enrichedVehicles = filteredVehicles.Select(v =>
+                {
+                    var customer = customers.FirstOrDefault(c => c.IdNumber == v.CustomerId);
+                    return new Vehicle
+                    {
+                        LicensePlate = v.LicensePlate,
+                        Brand = v.Brand,
+                        Model = v.Model,
+                        Traction = v.Traction,
+                        Color = v.Color,
+                        LastServiceDate = v.LastServiceDate,
+                        HasNanoCeramicTreatment = v.HasNanoCeramicTreatment,
+                        CustomerId = v.CustomerId,
+                        Customer = customer
+                    };
+                }).ToList();
+
+                return Ok(enrichedVehicles);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Error searching vehicles", error = ex.Message });
+            }
+        }
+
+        // GET: api/Vehicle/customer/{customerId}
+        [HttpGet("customer/{customerId}")]
+        public ActionResult<IEnumerable<Vehicle>> GetByCustomer(string customerId)
+        {
+            try
+            {
+                var customerVehicles = vehicles.Where(v => v.CustomerId == customerId).ToList();
+
+                // Enrich with customer information
+                var customer = customers.FirstOrDefault(c => c.IdNumber == customerId);
+                var enrichedVehicles = customerVehicles.Select(v =>
+                {
+                    v.Customer = customer;
+                    return v;
+                }).ToList();
+
+                return Ok(enrichedVehicles);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error retrieving vehicles by customer", error = ex.Message });
             }
         }
 
@@ -122,12 +192,23 @@ namespace dotnet_webapi_car_wash.Controllers
                 {
                     validationErrors.Add("Color is required.");
                 }
+                if (string.IsNullOrWhiteSpace(vehicle.CustomerId))
+                {
+                    validationErrors.Add("Customer is required.");
+                }
 
                 // Check if vehicle with same license plate already exists
                 var existingVehicle = GetVehicleById(vehicle.LicensePlate);
                 if (existingVehicle != null)
                 {
                     validationErrors.Add("A vehicle with that license plate already exists.");
+                }
+
+                // Validate customer exists
+                var customer = customers.FirstOrDefault(c => c.IdNumber == vehicle.CustomerId);
+                if (customer == null)
+                {
+                    validationErrors.Add("The selected customer does not exist.");
                 }
 
                 // Validate last service date not in future
@@ -141,6 +222,7 @@ namespace dotnet_webapi_car_wash.Controllers
                     return BadRequest(new { message = "Validation errors", errors = validationErrors });
                 }
 
+                vehicle.Customer = customer;
                 vehicles.Add(vehicle);
                 return CreatedAtAction(nameof(Get), new { id = vehicle.LicensePlate }, vehicle);
             }
@@ -186,6 +268,17 @@ namespace dotnet_webapi_car_wash.Controllers
                 {
                     validationErrors.Add("Color is required.");
                 }
+                if (string.IsNullOrWhiteSpace(vehicle.CustomerId))
+                {
+                    validationErrors.Add("Customer is required.");
+                }
+
+                // Validate customer exists
+                var customer = customers.FirstOrDefault(c => c.IdNumber == vehicle.CustomerId);
+                if (customer == null)
+                {
+                    validationErrors.Add("The selected customer does not exist.");
+                }
 
                 // Validate last service date not in future
                 if (vehicle.LastServiceDate.HasValue && vehicle.LastServiceDate.Value > DateTime.Now)
@@ -200,6 +293,7 @@ namespace dotnet_webapi_car_wash.Controllers
 
                 // Ensure license plate doesn't change
                 vehicle.LicensePlate = id;
+                vehicle.Customer = customer;
                 bool success = UpdateVehicle(vehicle);
 
                 if (success)
@@ -250,21 +344,11 @@ namespace dotnet_webapi_car_wash.Controllers
 
         private Vehicle GetVehicleById(string id)
         {
-            Vehicle vehicle = null;
-            foreach (var veh in vehicles)
-            {
-                if (veh.LicensePlate == id)
-                {
-                    vehicle = veh;
-                    break;
-                }
-            }
-            return vehicle;
+            return vehicles.FirstOrDefault(v => v.LicensePlate == id);
         }
 
         private bool UpdateVehicle(Vehicle updatedVehicle)
         {
-            bool success = false;
             try
             {
                 for (int i = 0; i < vehicles.Count; i++)
@@ -272,35 +356,33 @@ namespace dotnet_webapi_car_wash.Controllers
                     if (vehicles[i].LicensePlate == updatedVehicle.LicensePlate)
                     {
                         vehicles[i] = updatedVehicle;
-                        success = true;
-                        break;
+                        return true;
                     }
                 }
+                return false;
             }
             catch
             {
-                success = false;
+                return false;
             }
-            return success;
         }
 
         private bool DeleteVehicle(string id)
         {
-            bool success = false;
             try
             {
-                Vehicle vehicleToRemove = GetVehicleById(id);
+                var vehicleToRemove = GetVehicleById(id);
                 if (vehicleToRemove != null)
                 {
                     vehicles.Remove(vehicleToRemove);
-                    success = true;
+                    return true;
                 }
+                return false;
             }
             catch
             {
-                success = false;
+                return false;
             }
-            return success;
         }
 
         #endregion

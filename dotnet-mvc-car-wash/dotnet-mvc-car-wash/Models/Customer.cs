@@ -32,5 +32,6 @@ namespace dotnet_mvc_car_wash.Models
         [Required]
         [Display(Name = "Wash Preference")]
         public WashPreference WashPreference { get; set; }
+        public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
     }
 }
