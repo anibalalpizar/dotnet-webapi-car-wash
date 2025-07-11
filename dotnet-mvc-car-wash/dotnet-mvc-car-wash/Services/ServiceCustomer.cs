@@ -1,29 +1,28 @@
 ﻿using dotnet_mvc_car_wash.Models;
-using dotnet_mvc_car_wash.Services;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace dotnet_mvc_car_wash.Services
 {
-    public class ServiceEmployee : IServiceEmployee
+    public class ServiceCustomer : IServiceCustomer
     {
         private readonly HttpClient httpClient;
-        public ServiceEmployee(HttpClient httpClient)
+        public ServiceCustomer(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
 
-        // GET all employees
-        public async Task<List<Employee>> Get()
+        // GET all customers
+        public async Task<List<Customer>> Get()
         {
-            List<Employee> list = new List<Employee>();
+            List<Customer> list = new List<Customer>();
             try
             {
-                var response = await httpClient.GetAsync("api/Employee");
+                var response = await httpClient.GetAsync("api/Customer");
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var resultado = JsonConvert.DeserializeObject<List<Employee>>(json);
+                    var resultado = JsonConvert.DeserializeObject<List<Customer>>(json);
                     if (resultado != null)
                     {
                         list.AddRange(resultado);
@@ -33,7 +32,7 @@ namespace dotnet_mvc_car_wash.Services
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
                     var errorResponse = JsonConvert.DeserializeObject<dynamic>(errorContent);
-                    string errorMessage = errorResponse?.message ?? "Error loading employees";
+                    string errorMessage = errorResponse?.message ?? "Error loading customers";
                     throw new Exception(errorMessage);
                 }
             }
@@ -48,23 +47,23 @@ namespace dotnet_mvc_car_wash.Services
             return list;
         }
 
-        // GET employee by ID
-        public async Task<Employee?> GetById(string id)
+        // GET customer by ID
+        public async Task<Customer?> GetById(string id)
         {
             try
             {
-                var response = await httpClient.GetAsync($"api/Employee/{id}");
+                var response = await httpClient.GetAsync($"api/Customer/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    var employee = JsonConvert.DeserializeObject<Employee>(json);
-                    return employee;
+                    var customer = JsonConvert.DeserializeObject<Customer>(json);
+                    return customer;
                 }
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
                     var errorResponse = JsonConvert.DeserializeObject<dynamic>(errorContent);
-                    string errorMessage = errorResponse?.message ?? "Employee not found";
+                    string errorMessage = errorResponse?.message ?? "Customer not found";
                     throw new Exception(errorMessage);
                 }
             }
@@ -74,18 +73,18 @@ namespace dotnet_mvc_car_wash.Services
             }
             catch (Exception ex) when (!(ex is Exception && ex.Message.Contains("Error")))
             {
-                throw new Exception($"Error getting employee by ID: {ex.Message}", ex);
+                throw new Exception($"Error getting customer by ID: {ex.Message}", ex);
             }
         }
 
-        // POST - Create new employee
-        public async Task<bool> Save(Employee employee)
+        // POST - Create new customer
+        public async Task<bool> Save(Customer customer)
         {
             try
             {
-                var json = JsonConvert.SerializeObject(employee);
+                var json = JsonConvert.SerializeObject(customer);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await httpClient.PostAsync("api/Employee", content);
+                var response = await httpClient.PostAsync("api/Customer", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -107,7 +106,7 @@ namespace dotnet_mvc_car_wash.Services
                         throw new Exception(string.Join("; ", validationErrors));
                     }
 
-                    string errorMessage = errorResponse?.message ?? "Could not create employee";
+                    string errorMessage = errorResponse?.message ?? "Could not create customer";
                     throw new Exception(errorMessage);
                 }
             }
@@ -117,18 +116,18 @@ namespace dotnet_mvc_car_wash.Services
             }
             catch (Exception ex) when (!(ex is Exception && ex.Message.Contains("Error")))
             {
-                throw new Exception($"Error saving employee: {ex.Message}", ex);
+                throw new Exception($"Error saving customer: {ex.Message}", ex);
             }
         }
 
-        // PUT - Update existing employee
-        public async Task<bool> Update(Employee employee)
+        // PUT - Update existing customer
+        public async Task<bool> Update(Customer customer)
         {
             try
             {
-                var json = JsonConvert.SerializeObject(employee);
+                var json = JsonConvert.SerializeObject(customer);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await httpClient.PutAsync($"api/Employee/{employee.Id}", content);
+                var response = await httpClient.PutAsync($"api/Customer/{customer.IdNumber}", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -150,7 +149,7 @@ namespace dotnet_mvc_car_wash.Services
                         throw new Exception(string.Join("; ", validationErrors));
                     }
 
-                    string errorMessage = errorResponse?.message ?? "Could not update employee";
+                    string errorMessage = errorResponse?.message ?? "Could not update customer";
                     throw new Exception(errorMessage);
                 }
             }
@@ -160,16 +159,16 @@ namespace dotnet_mvc_car_wash.Services
             }
             catch (Exception ex) when (!(ex is Exception && ex.Message.Contains("Error")))
             {
-                throw new Exception($"Error updating employee: {ex.Message}", ex);
+                throw new Exception($"Error updating customer: {ex.Message}", ex);
             }
         }
 
-        // DELETE employee by ID
+        // DELETE customer by ID
         public async Task<bool> Delete(string id)
         {
             try
             {
-                var response = await httpClient.DeleteAsync($"api/Employee/{id}");
+                var response = await httpClient.DeleteAsync($"api/Customer/{id}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -179,7 +178,7 @@ namespace dotnet_mvc_car_wash.Services
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
                     var errorResponse = JsonConvert.DeserializeObject<dynamic>(errorContent);
-                    string errorMessage = errorResponse?.message ?? "Could not delete employee";
+                    string errorMessage = errorResponse?.message ?? "Could not delete customer";
                     throw new Exception(errorMessage);
                 }
             }
@@ -189,7 +188,37 @@ namespace dotnet_mvc_car_wash.Services
             }
             catch (Exception ex) when (!(ex is Exception && ex.Message.Contains("Error")))
             {
-                throw new Exception($"Error deleting employee: {ex.Message}", ex);
+                throw new Exception($"Error deleting customer: {ex.Message}", ex);
+            }
+        }
+
+        // GET customers with search filter
+        public async Task<List<Customer>> GetWithSearch(string searchTerm)
+        {
+            try
+            {
+                var response = await httpClient.GetAsync($"api/Customer/search?searchTerm={Uri.EscapeDataString(searchTerm ?? "")}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var resultado = JsonConvert.DeserializeObject<List<Customer>>(json);
+                    return resultado ?? new List<Customer>();
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    var errorResponse = JsonConvert.DeserializeObject<dynamic>(errorContent);
+                    string errorMessage = errorResponse?.message ?? "Error searching customers";
+                    throw new Exception(errorMessage);
+                }
+            }
+            catch (JsonException)
+            {
+                throw new Exception("Error processing server response");
+            }
+            catch (Exception ex) when (!(ex is Exception && ex.Message.Contains("Error")))
+            {
+                throw new Exception($"Error searching customers: {ex.Message}", ex);
             }
         }
     }
