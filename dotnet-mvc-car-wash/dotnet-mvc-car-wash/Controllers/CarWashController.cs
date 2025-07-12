@@ -1,51 +1,55 @@
 ﻿using dotnet_mvc_car_wash.Models;
-using dotnet_mvc_car_wash.Models.Enums;
+using dotnet_mvc_car_wash.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_mvc_car_wash.Controllers
 {
     public class LavadoController : Controller
     {
-        private static List<CarWash> carWashs = new List<CarWash>();
+        private readonly IServiceCarWash serviceCarWash;
+
+        public LavadoController(IServiceCarWash serviceCarWash)
+        {
+            this.serviceCarWash = serviceCarWash;
+        }
 
         // GET: LavadoController
-        public ActionResult Index(string searchTerm)
+        public async Task<ActionResult> Index(string searchTerm)
         {
-            var filteredLavados = carWashs;
-
-            if (!string.IsNullOrEmpty(searchTerm))
+            try
             {
-                // Filter car wash based on search term
-                filteredLavados = carWashs.Where(l =>
-                    l.IdCarWash.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    l.VehicleLicensePlate.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    l.IdClient.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    l.IdEmployee.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    l.WashType.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    l.WashStatus.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    l.BasePrice.ToString().Contains(searchTerm) ||
-                    l.TotalPrice.ToString().Contains(searchTerm) ||
-                    l.CreationDate.ToString("dd/MM/yyyy").Contains(searchTerm) ||
-                    (l.Observations?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ?? false)
-                ).ToList();
+                List<CarWash> list = await serviceCarWash.Get();
+
+                ViewBag.SearchTerm = searchTerm;
+                ViewBag.LavadoCount = list.Count;
+                ViewBag.FilteredCount = list.Count;
+
+                return View(list);
             }
-
-            ViewBag.SearchTerm = searchTerm;
-            ViewBag.LavadoCount = carWashs.Count;
-            ViewBag.FilteredCount = filteredLavados.Count;
-
-            return View(filteredLavados);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading car washes: " + ex.Message;
+                return View(new List<CarWash>());
+            }
         }
 
         // GET: LavadoController/Details/5
-        public ActionResult Details(string id)
+        public async Task<ActionResult> Details(string id)
         {
-            var carWash = GetCarWashById(id);
-            if (carWash == null)
+            try
             {
-                return NotFound();
+                var carWash = await serviceCarWash.GetById(id);
+                if (carWash == null)
+                {
+                    return NotFound();
+                }
+                return View(carWash);
             }
-            return View(carWash);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading car wash details: " + ex.Message;
+                return View();
+            }
         }
 
         // GET: LavadoController/Create
@@ -57,171 +61,131 @@ namespace dotnet_mvc_car_wash.Controllers
         // POST: LavadoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CarWash carWash)
+        public async Task<ActionResult> Create(CarWash carWash)
         {
             try
             {
-                if (carWash.WashType == WashType.LaJoya && (!carWash.PricetoAgree.HasValue || carWash.PricetoAgree <= 0))
+                if (carWash.WashType == Models.Enums.WashType.LaJoya && (!carWash.PricetoAgree.HasValue || carWash.PricetoAgree <= 0))
                 {
-                    ModelState.AddModelError("Price to Agree", "You must specify a price for the 'La Joya' wash.");
+                    ModelState.AddModelError("PricetoAgree", "You must specify a price for the 'La Joya' wash.");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    var existingLavado = GetCarWashById(carWash.IdCarWash);
-                    if (existingLavado == null)
-                    {
-                        carWash.CalculatePrices();
-
-                        if (carWash.CreationDate == default(DateTime))
-                        {
-                            carWash.CreationDate = DateTime.Now;
-                        }
-
-                        carWashs.Add(carWash);
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "A wash with that ID already exists.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "An error occurred while creating the wash: " + ex.Message);
-            }
-            return View(carWash);
-        }
-
-        // GET: LavadoController/Edit/5
-        public ActionResult Edit(string id)
-        {
-            var carWash = GetCarWashById(id);
-            if (carWash == null)
-            {
-                return NotFound();
-            }
-            return View(carWash);
-        }
-
-        // POST: LavadoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, CarWash carWash)
-        {
-            try
-            {
-                if (carWash.WashType == WashType.LaJoya && (!carWash.PricetoAgree.HasValue || carWash.PricetoAgree <= 0))
-                {
-                    ModelState.AddModelError("PrecioAConvenir", "You must specify a price for the 'La Joya' wash.");
-                }
-
-                if (ModelState.IsValid)
-                {
-                    carWash.IdCarWash = id; // Ensure the ID remains the same
-
-                    carWash.CalculatePrices();
-
-                    bool success = UpdateCarWash(carWash);
+                    bool success = await serviceCarWash.Save(carWash);
                     if (success)
                     {
                         return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        ModelState.AddModelError("", "An error occurred while creating the wash.");
+                        ModelState.AddModelError("", "Could not create car wash.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while creating the wash: " + ex.Message);
+                ModelState.AddModelError("", "Error creating car wash: " + ex.Message);
             }
+
+            return View(carWash);
+        }
+
+        // GET: LavadoController/Edit/5
+        public async Task<ActionResult> Edit(string id)
+        {
+            try
+            {
+                var carWash = await serviceCarWash.GetById(id);
+                if (carWash == null)
+                {
+                    return NotFound();
+                }
+                return View(carWash);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading car wash for editing: " + ex.Message;
+                return View();
+            }
+        }
+
+        // POST: LavadoController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(string id, CarWash carWash)
+        {
+            try
+            {
+                if (carWash.WashType == Models.Enums.WashType.LaJoya && (!carWash.PricetoAgree.HasValue || carWash.PricetoAgree <= 0))
+                {
+                    ModelState.AddModelError("PricetoAgree", "You must specify a price for the 'La Joya' wash.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    carWash.IdCarWash = id; // Ensure ID doesn't change
+                    bool success = await serviceCarWash.Update(carWash);
+                    if (success)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Could not update car wash.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error updating car wash: " + ex.Message);
+            }
+
             return View(carWash);
         }
 
         // GET: LavadoController/Delete/5
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
-            var lavado = GetCarWashById(id);
-            if (lavado == null)
+            try
             {
-                return NotFound();
+                var carWash = await serviceCarWash.GetById(id);
+                if (carWash == null)
+                {
+                    return NotFound();
+                }
+                return View(carWash);
             }
-            return View(lavado);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error loading car wash for deletion: " + ex.Message;
+                return View();
+            }
         }
 
         // POST: LavadoController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string id, IFormCollection collection)
+        public async Task<ActionResult> Delete(string id, IFormCollection collection)
         {
             try
             {
-                bool success = DeleteCarWash(id);
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
-        private CarWash GetCarWashById(string id)
-        {
-            CarWash carWash = null;
-            foreach (var lav in carWashs)
-            {
-                if (lav.IdCarWash == id)
+                bool success = await serviceCarWash.Delete(id);
+                if (!success)
                 {
-                    carWash = lav;
-                    break;
+                    TempData["ErrorMessage"] = "Could not delete car wash.";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Car wash deleted successfully.";
                 }
             }
-            return carWash;
-        }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error deleting car wash: " + ex.Message;
+            }
 
-        private bool UpdateCarWash(CarWash updatedCarWash)
-        {
-            bool success = false;
-            try
-            {
-                for (int i = 0; i < carWashs.Count; i++)
-                {
-                    if (carWashs[i].IdCarWash == updatedCarWash.IdCarWash)
-                    {
-                        updatedCarWash.CreationDate = carWashs[i].CreationDate;
-                        carWashs[i] = updatedCarWash;
-                        success = true;
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                success = false;
-            }
-            return success;
-        }
-
-        private bool DeleteCarWash(string id)
-        {
-            bool success = false;
-            try
-            {
-                CarWash lavadoToRemove = GetCarWashById(id);
-                if (lavadoToRemove != null)
-                {
-                    carWashs.Remove(lavadoToRemove);
-                    success = true;
-                }
-            }
-            catch
-            {
-                success = false;
-            }
-            return success;
+            return RedirectToAction(nameof(Index));
         }
     }
 }
