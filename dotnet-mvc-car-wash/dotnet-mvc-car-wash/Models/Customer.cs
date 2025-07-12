@@ -32,6 +32,9 @@ namespace dotnet_mvc_car_wash.Models
         [Required]
         [Display(Name = "Wash Preference")]
         public WashPreference WashPreference { get; set; }
+
+        // Navigation properties
         public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public List<CarWash> CarWashes { get; set; } = new List<CarWash>();
     }
 }

@@ -10,7 +10,7 @@ namespace dotnet_webapi_car_wash.Controllers
     {
         private static List<Customer> customers = CustomerController.customers;
 
-        private static List<Vehicle> vehicles = new List<Vehicle>
+        public static List<Vehicle> vehicles = new List<Vehicle>
         {
             new Vehicle
             {

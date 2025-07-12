@@ -26,10 +26,12 @@ namespace dotnet_mvc_car_wash.Models
         [Display(Name = "Nano Ceramic Treatment")]
         public bool HasNanoCeramicTreatment { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Customer")]
         public string CustomerId { get; set; }
 
+        // Navigation properties
         public Customer? Customer { get; set; }
+        public List<CarWash> CarWashes { get; set; } = new List<CarWash>();
     }
 }

@@ -17,17 +17,28 @@
         <span asp-validation-for="IdCarWash"></span>
     </div>
 
+    <div class="form-group">
+        <label asp-for="IdClient" class="control-label"></label>
+        <select asp-for="IdClient" class="form-control" asp-items="ViewBag.CustomerSelectList">
+            <option value="">-- Select a client --</option>
+        </select>
+        <span asp-validation-for="IdClient" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VehicleLicensePlate" class="control-label"></label>
+        <select asp-for="VehicleLicensePlate" class="form-control" asp-items="ViewBag.VehicleSelectList">
+            <option value="">-- Select a vehicle --</option>
+        </select>
+        <span asp-validation-for="VehicleLicensePlate" class="text-danger"></span>
+    </div>
+
     <div>
         <label asp-for="VehicleLicensePlate"></label>
         <input asp-for="VehicleLicensePlate" />
         <span asp-validation-for="VehicleLicensePlate"></span>
     </div>
 
-    <div>
-        <label asp-for="IdClient"></label>
-        <input asp-for="IdClient" />
-        <span asp-validation-for="IdClient"></span>
-    </div>
 
     <div>
         <label asp-for="IdEmployee"></label>

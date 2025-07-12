@@ -33,6 +33,8 @@ namespace dotnet_webapi_car_wash.Models
         [Display(Name = "Wash Preference")]
         public WashPreference WashPreference { get; set; }
 
+        // Navigation properties
         public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public List<CarWash> CarWashes { get; set; } = new List<CarWash>();
     }
 }

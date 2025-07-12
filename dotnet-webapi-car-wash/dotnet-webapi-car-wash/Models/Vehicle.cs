@@ -30,6 +30,8 @@ namespace dotnet_webapi_car_wash.Models
         [Display(Name = "Customer")]
         public string CustomerId { get; set; }
 
+        // Navigation properties
         public Customer? Customer { get; set; }
+        public List<CarWash> CarWashes { get; set; } = new List<CarWash>();
     }
 }

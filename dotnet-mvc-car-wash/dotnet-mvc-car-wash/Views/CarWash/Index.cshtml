@@ -33,6 +33,8 @@
             <th>@Html.DisplayNameFor(model => model.FirstOrDefault().IVA)</th>
             <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TotalPrice)</th>
             <th>@Html.DisplayNameFor(model => model.FirstOrDefault().WashStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Customer.FullName)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Vehicle.LicensePlate)</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -48,11 +50,13 @@
                     <td>₡@item.IVA.ToString("N0")</td>
                     <td>₡@item.TotalPrice.ToString("N0")</td>
                     <td>@Html.DisplayFor(modelItem => item.WashStatus)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer.FullName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Vehicle.LicensePlate)</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.IdCarWash">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.IdCarWash">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.IdCarWash">Delete</a>
-                    </td>
+                    </td>             
                 </tr>
             }
         }

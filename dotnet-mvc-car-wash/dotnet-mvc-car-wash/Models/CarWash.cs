@@ -47,6 +47,10 @@ namespace dotnet_mvc_car_wash.Models
         [Display(Name = "Observations")]
         public string? Observations { get; set; }
 
+        // Navigation properties for relationships
+        public Vehicle? Vehicle { get; set; }
+        public Customer? Customer { get; set; }
+
         public CarWash()
         {
             CreationDate = DateTime.Now;
@@ -86,4 +90,5 @@ namespace dotnet_mvc_car_wash.Models
             };
         }
     }
+
 }
