@@ -42,6 +42,15 @@ builder.Services.AddHttpClient<IServiceCarWash, ServiceCarWash>(client =>
     ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
 });
 
+builder.Services.AddHttpClient<IServiceReport, ServiceReport>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7059/");
+})
+.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+});
+
 
 var app = builder.Build();
 

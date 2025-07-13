@@ -11,19 +11,86 @@ namespace dotnet_webapi_car_wash.Controllers
         private static List<Customer> customers = CustomerController.customers;
 
         public static List<Vehicle> vehicles = new List<Vehicle>
-        {
-            new Vehicle
-            {
-                LicensePlate = "ABC123",
-                Brand = "Toyota",
-                Model = "Camry",
-                Traction = "FWD",
-                Color = "Blue",
-                LastServiceDate = new DateTime(2024, 1, 15),
-                HasNanoCeramicTreatment = true,
-                CustomerId = "123456789"
-            }
-        };
+{
+    new Vehicle
+    {
+        LicensePlate = "ABC123",
+        Brand = "Toyota",
+        Model = "Camry",
+        Traction = "FWD",
+        Color = "Blue",
+        LastServiceDate = new DateTime(2024, 1, 15),
+        HasNanoCeramicTreatment = true,
+        CustomerId = "123456789"
+    },
+    new Vehicle
+    {
+        LicensePlate = "DEF456",
+        Brand = "Honda",
+        Model = "Civic",
+        Traction = "FWD",
+        Color = "Red",
+        LastServiceDate = new DateTime(2023, 12, 10), // Hace más tiempo
+        HasNanoCeramicTreatment = false,
+        CustomerId = "987654321"
+    },
+    new Vehicle
+    {
+        LicensePlate = "GHI789",
+        Brand = "Nissan",
+        Model = "Sentra",
+        Traction = "FWD",
+        Color = "White",
+        LastServiceDate = new DateTime(2024, 2, 5),
+        HasNanoCeramicTreatment = true,
+        CustomerId = "456789123"
+    },
+    new Vehicle
+    {
+        LicensePlate = "JKL012",
+        Brand = "Ford",
+        Model = "Focus",
+        Traction = "FWD",
+        Color = "Black",
+        LastServiceDate = new DateTime(2023, 11, 20), // Hace mucho tiempo
+        HasNanoCeramicTreatment = false,
+        CustomerId = "321654987"
+    },
+    new Vehicle
+    {
+        LicensePlate = "MNO345",
+        Brand = "Hyundai",
+        Model = "Elantra",
+        Traction = "FWD",
+        Color = "Silver",
+        LastServiceDate = new DateTime(2024, 1, 30),
+        HasNanoCeramicTreatment = true,
+        CustomerId = "789456123"
+    },
+    new Vehicle
+    {
+        LicensePlate = "PQR678",
+        Brand = "Kia",
+        Model = "Rio",
+        Traction = "FWD",
+        Color = "Blue",
+        LastServiceDate = new DateTime(2023, 10, 15), // Hace mucho tiempo
+        HasNanoCeramicTreatment = false,
+        CustomerId = "789456123" // Segundo vehículo para Luis
+    },
+    new Vehicle
+    {
+        LicensePlate = "STU901",
+        Brand = "Chevrolet",
+        Model = "Spark",
+        Traction = "FWD",
+        Color = "Yellow",
+        LastServiceDate = null, // Nunca ha tenido servicio
+        HasNanoCeramicTreatment = false,
+        CustomerId = "456789123" // Segundo vehículo para Carlos
+    }
+};
+
 
         // GET: api/Vehicle
         [HttpGet]

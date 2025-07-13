@@ -1,0 +1,155 @@
+﻿@model dotnet_mvc_car_wash.Models.WashStatistics
+
+@{
+    ViewData["Title"] = "Estadísticas de Lavado";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <p><strong>Generado:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="@Url.Action("Index", "Report")" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+
+    <!-- Estadísticas generales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.TotalCarWashes</h5>
+                    <p class="card-text">Total de Lavados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.CarWashesLastMonth</h5>
+                    <p class="card-text">Lavados del Último Mes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.CarWashesLastWeek</h5>
+                    <p class="card-text">Lavados de la Última Semana</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.RevenueLastMonth.ToString("C")</h5>
+                    <p class="card-text">Ingresos del Último Mes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Intervalo Promedio de Servicio</h5>
+                    <p class="card-text">@Model.AverageServiceInterval.ToString("0.0") días</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Distribución por tipo de lavado -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Distribución por Tipo de Lavado</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.WashTypeDistribution != null && Model.WashTypeDistribution.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo de Lavado</th>
+                                        <th>Cantidad</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var washType in Model.WashTypeDistribution)
+                                    {
+                                        var percentage = Model.TotalCarWashes > 0 ? (washType.Count * 100.0 / Model.TotalCarWashes) : 0;
+                                        <tr>
+                                            <td>@washType.WashType</td>
+                                            <td>@washType.Count</td>
+                                            <td>@percentage.ToString("0.1")%</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No hay datos disponibles.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Distribución por estado -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Distribución por Estado</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.StatusDistribution != null && Model.StatusDistribution.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Estado</th>
+                                        <th>Cantidad</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var status in Model.StatusDistribution)
+                                    {
+                                        var percentage = Model.TotalCarWashes > 0 ? (status.Count * 100.0 / Model.TotalCarWashes) : 0;
+                                        <tr>
+                                            <td>@status.Status</td>
+                                            <td>@status.Count</td>
+                                            <td>@percentage.ToString("0.1")%</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No hay datos disponibles.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

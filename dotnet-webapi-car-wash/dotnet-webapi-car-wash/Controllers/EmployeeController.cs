@@ -10,19 +10,39 @@ namespace dotnet_webapi_car_wash.Controllers
     public class EmployeeController : ControllerBase
     {
         // Static list to store employees in memory
-        private static List<Employee> employees = new List<Employee>
-        {
-            new Employee
-            {
-                Id = "EMP001",
-                BirthDate = new DateTime(1990, 5, 15),
-                HireDate = new DateTime(2020, 3, 10),
-                DailySalary = 50000,
-                AccumulatedVacationDays = 15,
-                TerminationDate = null,
-                SeveranceAmount = null
-            }
-        };
+        public static List<Employee> employees = new List<Employee>
+{
+    new Employee
+    {
+        Id = "EMP001",
+        BirthDate = new DateTime(1990, 5, 15),
+        HireDate = new DateTime(2020, 3, 10),
+        DailySalary = 50000,
+        AccumulatedVacationDays = 15,
+        TerminationDate = null,
+        SeveranceAmount = null
+    },
+    new Employee
+    {
+        Id = "EMP002",
+        BirthDate = new DateTime(1985, 8, 22),
+        HireDate = new DateTime(2018, 6, 5),
+        DailySalary = 55000,
+        AccumulatedVacationDays = 20,
+        TerminationDate = null,
+        SeveranceAmount = null
+    },
+    new Employee
+    {
+        Id = "EMP003",
+        BirthDate = new DateTime(1992, 12, 3),
+        HireDate = new DateTime(2021, 1, 15),
+        DailySalary = 48000,
+        AccumulatedVacationDays = 10,
+        TerminationDate = null,
+        SeveranceAmount = null
+    }
+};
 
         // GET: api/Employee
         [HttpGet]

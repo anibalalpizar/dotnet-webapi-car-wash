@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Reportes";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Clientes para Contactar</h5>
+                </div>
+                <div class="card-body">
+                    <p>Reporte de clientes que necesitan ser contactados para programar un lavado.</p>
+                    <a href="@Url.Action("ClientsToContact", "Report")" class="btn btn-primary">Ver Reporte</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Estadísticas de Lavado</h5>
+                </div>
+                <div class="card-body">
+                    <p>Estadísticas generales sobre los lavados realizados.</p>
+                    <a href="@Url.Action("WashStatistics", "Report")" class="btn btn-primary">Ver Estadísticas</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Actividad del Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <p>Reporte detallado de la actividad de un cliente específico.</p>
+                    <a href="@Url.Action("CustomerActivity", "Report")" class="btn btn-primary">Ver Actividad</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,199 @@
+﻿@model dotnet_mvc_car_wash.Models.CustomerActivity
+
+@{
+    ViewData["Title"] = "Actividad del Cliente - " + Model.Customer.FullName;
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <p><strong>Generado:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="@Url.Action("CustomerActivity", "Report")" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+
+    <!-- Información del cliente -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Información del Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <strong>Identificación:</strong><br />
+                            @Model.Customer.IdNumber
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Nombre:</strong><br />
+                            @Model.Customer.FullName
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Teléfono:</strong><br />
+                            @Model.Customer.Phone
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Preferencia:</strong><br />
+                            @Model.Customer.WashPreference
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estadísticas generales -->
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.TotalVehicles</h5>
+                    <p class="card-text">Vehículos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.TotalWashes</h5>
+                    <p class="card-text">Lavados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.TotalSpent.ToString("C")</h5>
+                    <p class="card-text">Total Gastado</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@(Model.FavoriteWashType ?? "N/A")</h5>
+                    <p class="card-text">Tipo Favorito</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">@(Model.LastWashDate?.ToString("dd/MM/yyyy") ?? "N/A")</h5>
+                    <p class="card-text">Último Lavado</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalles de vehículos -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Vehículos</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.VehicleDetails != null && Model.VehicleDetails.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Placa</th>
+                                        <th>Marca</th>
+                                        <th>Modelo</th>
+                                        <th>Color</th>
+                                        <th>Último Lavado</th>
+                                        <th>Cantidad de Lavados</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var vehicle in Model.VehicleDetails)
+                                    {
+                                        <tr>
+                                            <td>@vehicle.LicensePlate</td>
+                                            <td>@vehicle.Brand</td>
+                                            <td>@vehicle.Model</td>
+                                            <td>@vehicle.Color</td>
+                                            <td>@(vehicle.LastWash?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                                            <td>@vehicle.WashCount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No hay vehículos registrados.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historial de lavados -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Historial de Lavados</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.WashHistory != null && Model.WashHistory.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Vehículo</th>
+                                        <th>Tipo</th>
+                                        <th>Estado</th>
+                                        <th>Precio</th>
+                                        <th>Observaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var wash in Model.WashHistory)
+                                    {
+                                        <tr>
+                                            <td>@wash.CreationDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@wash.VehicleLicensePlate</td>
+                                            <td>@wash.WashType</td>
+                                            <td>
+                                                <span class="badge @(wash.WashStatus == "Completed" ? "bg-success" : wash.WashStatus == "InProgress" ? "bg-warning" : "bg-secondary")">
+                                                    @wash.WashStatus
+                                                </span>
+                                            </td>
+                                            <td>@wash.TotalPrice.ToString("C")</td>
+                                            <td>@(wash.Observations ?? "-")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No hay historial de lavados.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

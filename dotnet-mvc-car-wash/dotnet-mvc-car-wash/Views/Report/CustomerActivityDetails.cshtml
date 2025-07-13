@@ -1,0 +1,228 @@
+﻿@model dotnet_mvc_car_wash.Models.CustomerActivity
+
+@{
+    ViewData["Title"] = "Detalles de Actividad - " + Model.Customer.FullName;
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <p><strong>Generado:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="@Url.Action("ClientsToContact", "Report")" class="btn btn-secondary">Volver a Reportes</a>
+        </div>
+    </div>
+
+    <!-- Información del cliente -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Información del Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <strong>Identificación:</strong><br />
+                            @Model.Customer.IdNumber
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Nombre:</strong><br />
+                            @Model.Customer.FullName
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Teléfono:</strong><br />
+                            @Model.Customer.Phone
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Preferencia:</strong><br />
+                            @Model.Customer.WashPreference
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen de estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card text-center bg-light">
+                <div class="card-body">
+                    <h4 class="card-title text-primary">@Model.TotalVehicles</h4>
+                    <p class="card-text">Vehículos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center bg-light">
+                <div class="card-body">
+                    <h4 class="card-title text-success">@Model.TotalWashes</h4>
+                    <p class="card-text">Lavados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center bg-light">
+                <div class="card-body">
+                    <h4 class="card-title text-info">@Model.TotalSpent.ToString("C")</h4>
+                    <p class="card-text">Total Gastado</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-light">
+                <div class="card-body">
+                    <h4 class="card-title text-warning">@(Model.FavoriteWashType ?? "N/A")</h4>
+                    <p class="card-text">Tipo Favorito</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-light">
+                <div class="card-body">
+                    <h4 class="card-title text-secondary">@(Model.LastWashDate?.ToString("dd/MM/yyyy") ?? "N/A")</h4>
+                    <p class="card-text">Último Lavado</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalles de vehículos -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>Vehículos Registrados</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.VehicleDetails != null && Model.VehicleDetails.Any())
+                    {
+                        <div class="row">
+                            @foreach (var vehicle in Model.VehicleDetails)
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-left-primary">
+                                        <div class="card-body">
+                                            <h6 class="card-title">@vehicle.LicensePlate</h6>
+                                            <p class="card-text">
+                                                <strong>@vehicle.Brand @vehicle.Model</strong><br />
+                                                <span class="text-muted">Color: @vehicle.Color</span><br />
+                                                <small>
+                                                    Último lavado: @(vehicle.LastWash?.ToString("dd/MM/yyyy") ?? "Nunca")<br />
+                                                    Total de lavados: @vehicle.WashCount
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No hay vehículos registrados para este cliente.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Historial completo de lavados -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>Historial Completo de Lavados</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.WashHistory != null && Model.WashHistory.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha</th>
+                                        <th>Vehículo</th>
+                                        <th>Tipo de Lavado</th>
+                                        <th>Estado</th>
+                                        <th>Precio</th>
+                                        <th>Observaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var wash in Model.WashHistory)
+                                    {
+                                        <tr>
+                                            <td><code>@wash.IdCarWash</code></td>
+                                            <td>@wash.CreationDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>
+                                                <strong>@wash.VehicleLicensePlate</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">@wash.WashType</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge @(wash.WashStatus == "Completed" ? "bg-success" : wash.WashStatus == "InProgress" ? "bg-warning text-dark" : wash.WashStatus == "Cancelled" ? "bg-danger" : "bg-secondary")">
+                                                    @wash.WashStatus
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <strong>@wash.TotalPrice.ToString("C")</strong>
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(wash.Observations))
+                                                {
+                                                    <small class="text-muted">@wash.Observations</small>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i> No hay historial de lavados para este cliente.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a href="@Url.Action("ClientsToContact", "Report")" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Volver a Clientes para Contactar
+            </a>
+            <a href="@Url.Action("CustomerActivity", "Report")" class="btn btn-outline-secondary">
+                <i class="fas fa-search"></i> Buscar Otro Cliente
+            </a>
+            <a href="@Url.Action("Index", "Report")" class="btn btn-outline-info">
+                <i class="fas fa-home"></i> Ir a Reportes
+            </a>
+        </div>
+    </div>
+</div>
