@@ -108,23 +108,6 @@ namespace dotnet_mvc_car_wash.Controllers
             }
         }
 
-        // Action para exportar reportes (futuro)
-        public async Task<ActionResult> ExportClientsToContact()
-        {
-            try
-            {
-                var report = await serviceReport.GetClientsToContact();
-                // Aquí podrías implementar la exportación a Excel, PDF, etc.
-                TempData["InfoMessage"] = "Export functionality coming soon.";
-                return RedirectToAction("ClientsToContact");
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Error exporting report: " + ex.Message;
-                return RedirectToAction("ClientsToContact");
-            }
-        }
-
         private async Task LoadCustomerSelectList()
         {
             try
