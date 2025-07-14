@@ -8,7 +8,6 @@ namespace dotnet_webapi_car_wash.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        // Referencias a las listas estáticas de otros controladores
         private static List<Customer> customers = CustomerController.customers;
         private static List<Vehicle> vehicles = VehicleController.vehicles;
         private static List<CarWash> carWashs = CarWashController.carWashs;
@@ -24,13 +23,10 @@ namespace dotnet_webapi_car_wash.Controllers
 
                 foreach (var customer in customers)
                 {
-                    // Obtener todos los vehículos del cliente
                     var customerVehicles = vehicles.Where(v => v.CustomerId == customer.IdNumber).ToList();
 
                     if (!customerVehicles.Any())
                     {
-                        // Cliente sin vehículos registrados
-                        // el continue aquí es para saltar al siguiente cliente
                         continue;
                     }
 
@@ -39,7 +35,6 @@ namespace dotnet_webapi_car_wash.Controllers
 
                     foreach (var vehicle in customerVehicles)
                     {
-                        // Obtener el último lavado del vehículo
                         var lastWash = carWashs
                             .Where(cw => cw.VehicleLicensePlate == vehicle.LicensePlate)
                             .OrderByDescending(cw => cw.CreationDate)
@@ -56,7 +51,6 @@ namespace dotnet_webapi_car_wash.Controllers
                         }
                         else
                         {
-                            // Nunca ha tenido un lavado
                             needsContact = true;
                             daysSinceLastWash = (DateTime.Now - (vehicle.LastServiceDate ?? DateTime.Now.AddYears(-1))).Days;
                         }
@@ -82,7 +76,6 @@ namespace dotnet_webapi_car_wash.Controllers
 
                     if (shouldContactClient)
                     {
-                        // Calcular la recomendación de contacto basada en la preferencia del cliente
                         var recommendedContactDate = CalculateRecommendedContactDate(customer.WashPreference);
                         var priority = CalculatePriority(vehicleReports, customer.WashPreference);
 
@@ -106,7 +99,6 @@ namespace dotnet_webapi_car_wash.Controllers
                     }
                 }
 
-                // Ordenar por prioridad y luego por días promedio sin lavado
                 var sortedClients = clientsToContact
                     .OrderByDescending(c => c.Priority)
                     .ThenByDescending(c => c.AverageDaysSinceLastWash)
@@ -116,7 +108,7 @@ namespace dotnet_webapi_car_wash.Controllers
                 {
                     return Ok(new
                     {
-                        message = "No hay clientes que necesiten ser contactados en este momento.",
+                        message = "No clients need to be contacted at this time..",
                         clients = new List<CustomerReportDto>(),
                         totalClients = 0,
                         generatedAt = DateTime.Now
@@ -125,7 +117,7 @@ namespace dotnet_webapi_car_wash.Controllers
 
                 return Ok(new
                 {
-                    message = $"Se encontraron {sortedClients.Count} clientes que necesitan ser contactados.",
+                    message = $"Found {sortedClients.Count} clients that need to be contacted.",
                     clients = sortedClients,
                     totalClients = sortedClients.Count,
                     generatedAt = DateTime.Now
@@ -238,8 +230,6 @@ namespace dotnet_webapi_car_wash.Controllers
             }
         }
 
-        #region Private Helper Methods
-
         private DateTime CalculateRecommendedContactDate(WashPreference preference)
         {
             var now = DateTime.Now;
@@ -258,7 +248,6 @@ namespace dotnet_webapi_car_wash.Controllers
             var maxDaysSinceWash = vehicles.Max(v => v.DaysSinceLastWash);
             var vehiclesNeedingWash = vehicles.Count(v => v.NeedsContact);
 
-            // Prioridad basada en días sin lavado y preferencia del cliente
             var basePriority = preference switch
             {
                 WashPreference.Weekly => 100,
@@ -268,10 +257,8 @@ namespace dotnet_webapi_car_wash.Controllers
                 _ => 50
             };
 
-            // Agregar puntos por días sin lavado
-            var daysPriority = Math.Min(maxDaysSinceWash / 7, 50); // Max 50 puntos por semanas sin lavado
+            var daysPriority = Math.Min(maxDaysSinceWash / 7, 50); 
 
-            // Agregar puntos por cantidad de vehículos que necesitan lavado
             var vehiclesPriority = vehiclesNeedingWash * 10;
 
             return basePriority + daysPriority + vehiclesPriority;
@@ -307,41 +294,5 @@ namespace dotnet_webapi_car_wash.Controllers
             return customerIntervals.Any() ? customerIntervals.Average() : 0;
         }
 
-        #endregion
     }
-
-    #region DTOs for Report Response
-
-    public class CustomerReportDto
-    {
-        public string IdNumber { get; set; }
-        public string FullName { get; set; }
-        public string Phone { get; set; }
-        public string Province { get; set; }
-        public string Canton { get; set; }
-        public string District { get; set; }
-        public string ExactAddress { get; set; }
-        public string WashPreference { get; set; }
-        public List<VehicleReportDto> Vehicles { get; set; } = new List<VehicleReportDto>();
-        public int TotalVehicles { get; set; }
-        public int VehiclesNeedingWash { get; set; }
-        public DateTime RecommendedContactDate { get; set; }
-        public int Priority { get; set; }
-        public double AverageDaysSinceLastWash { get; set; }
-    }
-
-    public class VehicleReportDto
-    {
-        public string LicensePlate { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public string Color { get; set; }
-        public DateTime? LastWashDate { get; set; }
-        public int DaysSinceLastWash { get; set; }
-        public bool NeedsContact { get; set; }
-        public string LastWashType { get; set; }
-        public bool HasNanoCeramicTreatment { get; set; }
-    }
-
-    #endregion
 }
