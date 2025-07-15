@@ -1,7 +1,7 @@
 ﻿@model dotnet_mvc_car_wash.Models.ClientsToContactResponse
 
 @{
-    ViewData["Title"] = "Clientes para Contactar";
+    ViewData["Title"] = "Clients to Contact";
 }
 
 <div class="container mt-4">
@@ -17,12 +17,12 @@
 
     <div class="row mb-3">
         <div class="col-md-6">
-            <p><strong>Total de clientes:</strong> @Model.TotalClients</p>
-            <p><strong>Generado:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Total clients:</strong> @Model.TotalClients</p>
+            <p><strong>Generated:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
         </div>
         <div class="col-md-6 text-end">
-            <a href="@Url.Action("ExportClientsToContact", "Report")" class="btn btn-success">Exportar</a>
-            <a href="@Url.Action("Index", "Report")" class="btn btn-secondary">Volver</a>
+            <a href="@Url.Action("ExportClientsToContact", "Report")" class="btn btn-success">Export</a>
+            <a href="@Url.Action("Index", "Report")" class="btn btn-secondary">Back</a>
         </div>
     </div>
 
@@ -39,15 +39,15 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Cliente</th>
-                        <th>Teléfono</th>
-                        <th>Dirección</th>
-                        <th>Preferencia</th>
-                        <th>Vehículos</th>
-                        <th>Prioridad</th>
-                        <th>Días Promedio</th>
-                        <th>Contacto Recomendado</th>
-                        <th>Acciones</th>
+                        <th>Client</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Preference</th>
+                        <th>Vehicles</th>
+                        <th>Priority</th>
+                        <th>Average Days</th>
+                        <th>Recommended Contact</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,18 +66,18 @@
                             <td>@client.WashPreference</td>
                             <td>
                                 @client.TotalVehicles total<br />
-                                <small>@client.VehiclesNeedingWash necesitan lavado</small>
+                                <small>@client.VehiclesNeedingWash need washing</small>
                             </td>
                             <td>
                                 <span class="badge @(client.Priority >= 100 ? "bg-danger" : client.Priority >= 80 ? "bg-warning" : "bg-info")">
                                     @client.Priority
                                 </span>
                             </td>
-                            <td>@client.AverageDaysSinceLastWash.ToString("0") días</td>
+                            <td>@client.AverageDaysSinceLastWash.ToString("0") days</td>
                             <td>@client.RecommendedContactDate.ToString("dd/MM/yyyy")</td>
                             <td>
                                 <a href="@Url.Action("CustomerActivityDetails", "Report", new { customerId = client.IdNumber })"
-                                   class="btn btn-sm btn-outline-primary">Ver Detalles</a>
+                                   class="btn btn-sm btn-outline-primary">View Details</a>
                             </td>
                         </tr>
                         @if (client.Vehicles != null && client.Vehicles.Any())
@@ -86,7 +86,7 @@
                                 <td colspan="9" class="p-0">
                                     <div class="collapse show">
                                         <div class="card card-body bg-light">
-                                            <h6>Vehículos:</h6>
+                                            <h6>Vehicles:</h6>
                                             <div class="row">
                                                 @foreach (var vehicle in client.Vehicles)
                                                 {
@@ -99,24 +99,24 @@
                                                                     <small>
                                                                         @if (vehicle.LastWashDate.HasValue)
                                                                         {
-                                                                            <span>Último lavado: @vehicle.LastWashDate.Value.ToString("dd/MM/yyyy")</span>
+                                                                            <span>Last wash: @vehicle.LastWashDate.Value.ToString("dd/MM/yyyy")</span>
                                                         
                                                                             <br />
                                                                         }
                                                                         else
                                                                         {
-                                                                            <span>Sin lavados registrados</span>
+                                                                            <span>No washes recorded</span>
                                                         
                                                                             <br />
                                                                         }
-                                                                        <span>Días sin lavado: @vehicle.DaysSinceLastWash</span><br />
+                                                                        <span>Days without wash: @vehicle.DaysSinceLastWash</span><br />
                                                                         @if (vehicle.NeedsContact)
                                                                         {
-                                                                            <span class="badge bg-warning">Necesita contacto</span>
+                                                                            <span class="badge bg-warning">Needs contact</span>
                                                                         }
                                                                         @if (vehicle.HasNanoCeramicTreatment)
                                                                         {
-                                                                            <span class="badge bg-info">Nano cerámico</span>
+                                                                            <span class="badge bg-info">Nano ceramic</span>
                                                                         }
                                                                     </small>
                                                                 </p>
@@ -138,7 +138,7 @@
     else
     {
         <div class="alert alert-info">
-            No hay clientes que necesiten ser contactados en este momento.
+            There are no clients that need to be contacted at this time.
         </div>
     }
 </div>
