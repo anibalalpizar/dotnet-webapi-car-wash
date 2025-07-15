@@ -1,7 +1,7 @@
 ﻿@model dotnet_mvc_car_wash.Models.WashStatistics
 
 @{
-    ViewData["Title"] = "Estadísticas de Lavado";
+    ViewData["Title"] = "Wash Statistics";
 }
 
 <div class="container mt-4">
@@ -17,20 +17,20 @@
 
     <div class="row mb-3">
         <div class="col-md-6">
-            <p><strong>Generado:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Generated:</strong> @Model.GeneratedAt.ToString("MM/dd/yyyy HH:mm")</p>
         </div>
         <div class="col-md-6 text-end">
-            <a href="@Url.Action("Index", "Report")" class="btn btn-secondary">Volver</a>
+            <a href="@Url.Action("Index", "Report")" class="btn btn-secondary">Back</a>
         </div>
     </div>
 
-    <!-- Estadísticas generales -->
+    <!-- General statistics -->
     <div class="row mb-4">
         <div class="col-md-3">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalCarWashes</h5>
-                    <p class="card-text">Total de Lavados</p>
+                    <p class="card-text">Total Car Washes</p>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@Model.CarWashesLastMonth</h5>
-                    <p class="card-text">Lavados del Último Mes</p>
+                    <p class="card-text">Car Washes Last Month</p>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@Model.CarWashesLastWeek</h5>
-                    <p class="card-text">Lavados de la Última Semana</p>
+                    <p class="card-text">Car Washes Last Week</p>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@Model.RevenueLastMonth.ToString("C")</h5>
-                    <p class="card-text">Ingresos del Último Mes</p>
+                    <p class="card-text">Revenue Last Month</p>
                 </div>
             </div>
         </div>
@@ -64,19 +64,19 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Intervalo Promedio de Servicio</h5>
-                    <p class="card-text">@Model.AverageServiceInterval.ToString("0.0") días</p>
+                    <h5 class="card-title">Average Service Interval</h5>
+                    <p class="card-text">@Model.AverageServiceInterval.ToString("0.0") days</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Distribución por tipo de lavado -->
+    <!-- Distribution by wash type -->
     <div class="row mb-4">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Distribución por Tipo de Lavado</h5>
+                    <h5>Distribution by Wash Type</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.WashTypeDistribution != null && Model.WashTypeDistribution.Any())
@@ -85,9 +85,9 @@
                             <table class="table table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Tipo de Lavado</th>
-                                        <th>Cantidad</th>
-                                        <th>Porcentaje</th>
+                                        <th>Wash Type</th>
+                                        <th>Count</th>
+                                        <th>Percentage</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -106,17 +106,17 @@
                     }
                     else
                     {
-                        <p>No hay datos disponibles.</p>
+                        <p>No data available.</p>
                     }
                 </div>
             </div>
         </div>
 
-        <!-- Distribución por estado -->
+        <!-- Distribution by status -->
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Distribución por Estado</h5>
+                    <h5>Distribution by Status</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.StatusDistribution != null && Model.StatusDistribution.Any())
@@ -125,9 +125,9 @@
                             <table class="table table-sm">
                                 <thead>
                                     <tr>
-                                        <th>Estado</th>
-                                        <th>Cantidad</th>
-                                        <th>Porcentaje</th>
+                                        <th>Status</th>
+                                        <th>Count</th>
+                                        <th>Percentage</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,7 +146,7 @@
                     }
                     else
                     {
-                        <p>No hay datos disponibles.</p>
+                        <p>No data available.</p>
                     }
                 </div>
             </div>
