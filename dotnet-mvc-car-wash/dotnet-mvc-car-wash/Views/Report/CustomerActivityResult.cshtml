@@ -1,7 +1,7 @@
 ﻿@model dotnet_mvc_car_wash.Models.CustomerActivity
 
 @{
-    ViewData["Title"] = "Actividad del Cliente - " + Model.Customer.FullName;
+    ViewData["Title"] = "Customer Activity - " + Model.Customer.FullName;
 }
 
 <div class="container mt-4">
@@ -17,36 +17,36 @@
 
     <div class="row mb-3">
         <div class="col-md-6">
-            <p><strong>Generado:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Generated:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
         </div>
         <div class="col-md-6 text-end">
-            <a href="@Url.Action("CustomerActivity", "Report")" class="btn btn-secondary">Volver</a>
+            <a href="@Url.Action("CustomerActivity", "Report")" class="btn btn-secondary">Back</a>
         </div>
     </div>
 
-    <!-- Información del cliente -->
+    <!-- Customer information -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Información del Cliente</h5>
+                    <h5>Customer Information</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <strong>Identificación:</strong><br />
+                            <strong>ID:</strong><br />
                             @Model.Customer.IdNumber
                         </div>
                         <div class="col-md-3">
-                            <strong>Nombre:</strong><br />
+                            <strong>Name:</strong><br />
                             @Model.Customer.FullName
                         </div>
                         <div class="col-md-3">
-                            <strong>Teléfono:</strong><br />
+                            <strong>Phone:</strong><br />
                             @Model.Customer.Phone
                         </div>
                         <div class="col-md-3">
-                            <strong>Preferencia:</strong><br />
+                            <strong>Preference:</strong><br />
                             @Model.Customer.WashPreference
                         </div>
                     </div>
@@ -55,13 +55,13 @@
         </div>
     </div>
 
-    <!-- Estadísticas generales -->
+    <!-- General statistics -->
     <div class="row mb-4">
         <div class="col-md-2">
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalVehicles</h5>
-                    <p class="card-text">Vehículos</p>
+                    <p class="card-text">Vehicles</p>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalWashes</h5>
-                    <p class="card-text">Lavados</p>
+                    <p class="card-text">Washes</p>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@Model.TotalSpent.ToString("C")</h5>
-                    <p class="card-text">Total Gastado</p>
+                    <p class="card-text">Total Spent</p>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@(Model.FavoriteWashType ?? "N/A")</h5>
-                    <p class="card-text">Tipo Favorito</p>
+                    <p class="card-text">Favorite Type</p>
                 </div>
             </div>
         </div>
@@ -93,18 +93,18 @@
             <div class="card text-center">
                 <div class="card-body">
                     <h5 class="card-title">@(Model.LastWashDate?.ToString("dd/MM/yyyy") ?? "N/A")</h5>
-                    <p class="card-text">Último Lavado</p>
+                    <p class="card-text">Last Wash</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Detalles de vehículos -->
+    <!-- Vehicle details -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Vehículos</h5>
+                    <h5>Vehicles</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.VehicleDetails != null && Model.VehicleDetails.Any())
@@ -113,12 +113,12 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Placa</th>
-                                        <th>Marca</th>
-                                        <th>Modelo</th>
+                                        <th>License Plate</th>
+                                        <th>Brand</th>
+                                        <th>Model</th>
                                         <th>Color</th>
-                                        <th>Último Lavado</th>
-                                        <th>Cantidad de Lavados</th>
+                                        <th>Last Wash</th>
+                                        <th>Wash Count</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -139,19 +139,19 @@
                     }
                     else
                     {
-                        <p>No hay vehículos registrados.</p>
+                        <p>No vehicles registered.</p>
                     }
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Historial de lavados -->
+    <!-- Wash history -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Historial de Lavados</h5>
+                    <h5>Wash History</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.WashHistory != null && Model.WashHistory.Any())
@@ -160,12 +160,12 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Fecha</th>
-                                        <th>Vehículo</th>
-                                        <th>Tipo</th>
-                                        <th>Estado</th>
-                                        <th>Precio</th>
-                                        <th>Observaciones</th>
+                                        <th>Date</th>
+                                        <th>Vehicle</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Price</th>
+                                        <th>Observations</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -190,7 +190,7 @@
                     }
                     else
                     {
-                        <p>No hay historial de lavados.</p>
+                        <p>No wash history.</p>
                     }
                 </div>
             </div>
