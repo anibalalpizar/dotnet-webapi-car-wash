@@ -1,7 +1,7 @@
 ﻿@model dotnet_mvc_car_wash.Models.CustomerActivity
 
 @{
-    ViewData["Title"] = "Detalles de Actividad - " + Model.Customer.FullName;
+    ViewData["Title"] = "Activity Details - " + Model.Customer.FullName;
 }
 
 <div class="container mt-4">
@@ -17,36 +17,36 @@
 
     <div class="row mb-3">
         <div class="col-md-6">
-            <p><strong>Generado:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Generated:</strong> @Model.GeneratedAt.ToString("dd/MM/yyyy HH:mm")</p>
         </div>
         <div class="col-md-6 text-end">
-            <a href="@Url.Action("ClientsToContact", "Report")" class="btn btn-secondary">Volver a Reportes</a>
+            <a href="@Url.Action("ClientsToContact", "Report")" class="btn btn-secondary">Back to Reports</a>
         </div>
     </div>
 
-    <!-- Información del cliente -->
+    <!-- Customer information -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h5>Información del Cliente</h5>
+                    <h5>Customer Information</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <strong>Identificación:</strong><br />
+                            <strong>ID:</strong><br />
                             @Model.Customer.IdNumber
                         </div>
                         <div class="col-md-3">
-                            <strong>Nombre:</strong><br />
+                            <strong>Name:</strong><br />
                             @Model.Customer.FullName
                         </div>
                         <div class="col-md-3">
-                            <strong>Teléfono:</strong><br />
+                            <strong>Phone:</strong><br />
                             @Model.Customer.Phone
                         </div>
                         <div class="col-md-3">
-                            <strong>Preferencia:</strong><br />
+                            <strong>Preference:</strong><br />
                             @Model.Customer.WashPreference
                         </div>
                     </div>
@@ -55,13 +55,13 @@
         </div>
     </div>
 
-    <!-- Resumen de estadísticas -->
+    <!-- Statistics summary -->
     <div class="row mb-4">
         <div class="col-md-2">
             <div class="card text-center bg-light">
                 <div class="card-body">
                     <h4 class="card-title text-primary">@Model.TotalVehicles</h4>
-                    <p class="card-text">Vehículos</p>
+                    <p class="card-text">Vehicles</p>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
             <div class="card text-center bg-light">
                 <div class="card-body">
                     <h4 class="card-title text-success">@Model.TotalWashes</h4>
-                    <p class="card-text">Lavados</p>
+                    <p class="card-text">Washes</p>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
             <div class="card text-center bg-light">
                 <div class="card-body">
                     <h4 class="card-title text-info">@Model.TotalSpent.ToString("C")</h4>
-                    <p class="card-text">Total Gastado</p>
+                    <p class="card-text">Total Spent</p>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
             <div class="card text-center bg-light">
                 <div class="card-body">
                     <h4 class="card-title text-warning">@(Model.FavoriteWashType ?? "N/A")</h4>
-                    <p class="card-text">Tipo Favorito</p>
+                    <p class="card-text">Favorite Type</p>
                 </div>
             </div>
         </div>
@@ -93,18 +93,18 @@
             <div class="card text-center bg-light">
                 <div class="card-body">
                     <h4 class="card-title text-secondary">@(Model.LastWashDate?.ToString("dd/MM/yyyy") ?? "N/A")</h4>
-                    <p class="card-text">Último Lavado</p>
+                    <p class="card-text">Last Wash</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Detalles de vehículos -->
+    <!-- Vehicle details -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-info text-white">
-                    <h5>Vehículos Registrados</h5>
+                    <h5>Registered Vehicles</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.VehicleDetails != null && Model.VehicleDetails.Any())
@@ -120,8 +120,8 @@
                                                 <strong>@vehicle.Brand @vehicle.Model</strong><br />
                                                 <span class="text-muted">Color: @vehicle.Color</span><br />
                                                 <small>
-                                                    Último lavado: @(vehicle.LastWash?.ToString("dd/MM/yyyy") ?? "Nunca")<br />
-                                                    Total de lavados: @vehicle.WashCount
+                                                    Last wash: @(vehicle.LastWash?.ToString("dd/MM/yyyy") ?? "Never")<br />
+                                                    Total washes: @vehicle.WashCount
                                                 </small>
                                             </p>
                                         </div>
@@ -133,7 +133,7 @@
                     else
                     {
                         <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> No hay vehículos registrados para este cliente.
+                            <i class="fas fa-info-circle"></i> No vehicles registered for this customer.
                         </div>
                     }
                 </div>
@@ -141,12 +141,12 @@
         </div>
     </div>
 
-    <!-- Historial completo de lavados -->
+    <!-- Complete wash history -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-success text-white">
-                    <h5>Historial Completo de Lavados</h5>
+                    <h5>Complete Wash History</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.WashHistory != null && Model.WashHistory.Any())
@@ -156,12 +156,12 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Fecha</th>
-                                        <th>Vehículo</th>
-                                        <th>Tipo de Lavado</th>
-                                        <th>Estado</th>
-                                        <th>Precio</th>
-                                        <th>Observaciones</th>
+                                        <th>Date</th>
+                                        <th>Vehicle</th>
+                                        <th>Wash Type</th>
+                                        <th>Status</th>
+                                        <th>Price</th>
+                                        <th>Observations</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -203,7 +203,7 @@
                     else
                     {
                         <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle"></i> No hay historial de lavados para este cliente.
+                            <i class="fas fa-exclamation-triangle"></i> No wash history for this customer.
                         </div>
                     }
                 </div>
@@ -211,17 +211,17 @@
         </div>
     </div>
 
-    <!-- Botones de acción -->
+    <!-- Action buttons -->
     <div class="row">
         <div class="col-md-12 text-center">
             <a href="@Url.Action("ClientsToContact", "Report")" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left"></i> Volver a Clientes para Contactar
+                <i class="fas fa-arrow-left"></i> Back to Clients to Contact
             </a>
             <a href="@Url.Action("CustomerActivity", "Report")" class="btn btn-outline-secondary">
-                <i class="fas fa-search"></i> Buscar Otro Cliente
+                <i class="fas fa-search"></i> Search Another Customer
             </a>
             <a href="@Url.Action("Index", "Report")" class="btn btn-outline-info">
-                <i class="fas fa-home"></i> Ir a Reportes
+                <i class="fas fa-home"></i> Go to Reports
             </a>
         </div>
     </div>
