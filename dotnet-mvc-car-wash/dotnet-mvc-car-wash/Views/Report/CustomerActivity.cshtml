@@ -1,7 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Actividad del Cliente";
+    ViewData["Title"] = "Customer Activity";
 }
-
 <div class="container mt-4">
     <h2>@ViewData["Title"]</h2>
     <hr />
@@ -15,10 +14,10 @@
     
     <div class="row mb-3">
         <div class="col-md-6">
-            <p>Selecciona un cliente para ver su actividad detallada.</p>
+            <p>Select a customer to view their detailed activity.</p>
         </div>
         <div class="col-md-6 text-end">
-            <a href="@Url.Action("Index", "Report")" class="btn btn-secondary">Volver</a>
+            <a href="@Url.Action("Index", "Report")" class="btn btn-secondary">Back</a>
         </div>
     </div>
     
@@ -26,7 +25,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>Seleccionar Cliente</h5>
+                    <h5>Select Customer</h5>
                 </div>
                 <div class="card-body">
                     @using (Html.BeginForm("CustomerActivity", "Report", FormMethod.Post))
@@ -34,13 +33,13 @@
                         @Html.AntiForgeryToken()
                         
                         <div class="mb-3">
-                            <label for="customerId" class="form-label">Cliente:</label>
-                            @Html.DropDownList("customerId", ViewBag.CustomerSelectList as SelectList, "Seleccione un cliente...", new { @class = "form-select" })
+                            <label for="customerId" class="form-label">Customer:</label>
+                            @Html.DropDownList("customerId", ViewBag.CustomerSelectList as SelectList, "Select a customer...", new { @class = "form-select" })
                             @Html.ValidationMessage("customerId", "", new { @class = "text-danger" })
                         </div>
                         
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Ver Actividad</button>
+                            <button type="submit" class="btn btn-primary">View Activity</button>
                         </div>
                     }
                 </div>
