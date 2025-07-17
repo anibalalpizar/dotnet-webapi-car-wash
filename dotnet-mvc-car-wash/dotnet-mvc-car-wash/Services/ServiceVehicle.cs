@@ -13,12 +13,18 @@ namespace dotnet_mvc_car_wash.Services
         }
 
         // GET all vehicles
-        public async Task<List<Vehicle>> Get()
+        public async Task<List<Vehicle>> Get(string searchTerm = null)
         {
             List<Vehicle> list = new List<Vehicle>();
             try
             {
-                var response = await httpClient.GetAsync("api/Vehicle");
+                string endpoint = "api/Vehicle";
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    endpoint += $"?searchTerm={Uri.EscapeDataString(searchTerm)}";
+                }
+
+                var response = await httpClient.GetAsync(endpoint);
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
