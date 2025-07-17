@@ -11,90 +11,90 @@ namespace dotnet_webapi_car_wash.Controllers
         private static List<Customer> customers = CustomerController.customers;
 
         public static List<Vehicle> vehicles = new List<Vehicle>
-{
-    new Vehicle
-    {
-        LicensePlate = "ABC123",
-        Brand = "Toyota",
-        Model = "Camry",
-        Traction = "FWD",
-        Color = "Blue",
-        LastServiceDate = new DateTime(2024, 1, 15),
-        HasNanoCeramicTreatment = true,
-        CustomerId = "123456789"
-    },
-    new Vehicle
-    {
-        LicensePlate = "DEF456",
-        Brand = "Honda",
-        Model = "Civic",
-        Traction = "FWD",
-        Color = "Red",
-        LastServiceDate = new DateTime(2023, 12, 10), // Hace más tiempo
-        HasNanoCeramicTreatment = false,
-        CustomerId = "987654321"
-    },
-    new Vehicle
-    {
-        LicensePlate = "GHI789",
-        Brand = "Nissan",
-        Model = "Sentra",
-        Traction = "FWD",
-        Color = "White",
-        LastServiceDate = new DateTime(2024, 2, 5),
-        HasNanoCeramicTreatment = true,
-        CustomerId = "456789123"
-    },
-    new Vehicle
-    {
-        LicensePlate = "JKL012",
-        Brand = "Ford",
-        Model = "Focus",
-        Traction = "FWD",
-        Color = "Black",
-        LastServiceDate = new DateTime(2023, 11, 20), // Hace mucho tiempo
-        HasNanoCeramicTreatment = false,
-        CustomerId = "321654987"
-    },
-    new Vehicle
-    {
-        LicensePlate = "MNO345",
-        Brand = "Hyundai",
-        Model = "Elantra",
-        Traction = "FWD",
-        Color = "Silver",
-        LastServiceDate = new DateTime(2024, 1, 30),
-        HasNanoCeramicTreatment = true,
-        CustomerId = "789456123"
-    },
-    new Vehicle
-    {
-        LicensePlate = "PQR678",
-        Brand = "Kia",
-        Model = "Rio",
-        Traction = "FWD",
-        Color = "Blue",
-        LastServiceDate = new DateTime(2023, 10, 15), // Hace mucho tiempo
-        HasNanoCeramicTreatment = false,
-        CustomerId = "789456123" // Segundo vehículo para Luis
-    },
-    new Vehicle
-    {
-        LicensePlate = "STU901",
-        Brand = "Chevrolet",
-        Model = "Spark",
-        Traction = "FWD",
-        Color = "Yellow",
-        LastServiceDate = null, // Nunca ha tenido servicio
-        HasNanoCeramicTreatment = false,
-        CustomerId = "456789123" // Segundo vehículo para Carlos
-    }
-};
+        {
+            new Vehicle
+            {
+                LicensePlate = "ABC123",
+                Brand = "Toyota",
+                Model = "Camry",
+                Traction = "FWD",
+                Color = "Blue",
+                LastServiceDate = new DateTime(2024, 1, 15),
+                HasNanoCeramicTreatment = true,
+                CustomerId = "123456789"
+            },
+            new Vehicle
+            {
+                LicensePlate = "DEF456",
+                Brand = "Honda",
+                Model = "Civic",
+                Traction = "FWD",
+                Color = "Red",
+                LastServiceDate = new DateTime(2023, 12, 10),
+                HasNanoCeramicTreatment = false,
+                CustomerId = "987654321"
+            },
+            new Vehicle
+            {
+                LicensePlate = "GHI789",
+                Brand = "Nissan",
+                Model = "Sentra",
+                Traction = "FWD",
+                Color = "White",
+                LastServiceDate = new DateTime(2024, 2, 5),
+                HasNanoCeramicTreatment = true,
+                CustomerId = "456789123"
+            },
+            new Vehicle
+            {
+                LicensePlate = "JKL012",
+                Brand = "Ford",
+                Model = "Focus",
+                Traction = "FWD",
+                Color = "Black",
+                LastServiceDate = new DateTime(2023, 11, 20),
+                HasNanoCeramicTreatment = false,
+                CustomerId = "321654987"
+            },
+            new Vehicle
+            {
+                LicensePlate = "MNO345",
+                Brand = "Hyundai",
+                Model = "Elantra",
+                Traction = "FWD",
+                Color = "Silver",
+                LastServiceDate = new DateTime(2024, 1, 30),
+                HasNanoCeramicTreatment = true,
+                CustomerId = "789456123"
+            },
+            new Vehicle
+            {
+                LicensePlate = "PQR678",
+                Brand = "Kia",
+                Model = "Rio",
+                Traction = "FWD",
+                Color = "Blue",
+                LastServiceDate = new DateTime(2023, 10, 15),
+                HasNanoCeramicTreatment = false,
+                CustomerId = "789456123"
+            },
+            new Vehicle
+            {
+                LicensePlate = "STU901",
+                Brand = "Chevrolet",
+                Model = "Spark",
+                Traction = "FWD",
+                Color = "Yellow",
+                LastServiceDate = null,
+                HasNanoCeramicTreatment = false,
+                CustomerId = "456789123"
+            }
+        };
 
 
         // GET: api/Vehicle
         [HttpGet]
-        public ActionResult<IEnumerable<Vehicle>> Get()
+        public ActionResult<IEnumerable<Vehicle>> Get(string searchTerm = null)
         {
             try
             {
@@ -103,8 +103,25 @@ namespace dotnet_webapi_car_wash.Controllers
                     return NotFound(new { message = "No vehicles found" });
                 }
 
+                var filteredVehicles = vehicles;
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    // Filter vehicles based on search term
+                    filteredVehicles = vehicles.Where(v =>
+                        v.LicensePlate.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        v.Brand.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        v.Model.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        v.Traction.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        v.Color.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        v.CustomerId.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        (v.LastServiceDate?.ToString("dd/MM/yyyy").Contains(searchTerm) ?? false) ||
+                        (v.HasNanoCeramicTreatment.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                    ).ToList();
+                }
+
                 // Enrich vehicles with customer information
-                var enrichedVehicles = vehicles.Select(v =>
+                var enrichedVehicles = filteredVehicles.Select(v =>
                 {
                     var customer = customers.FirstOrDefault(c => c.IdNumber == v.CustomerId);
                     return new Vehicle
@@ -126,30 +143,6 @@ namespace dotnet_webapi_car_wash.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Error retrieving vehicles", error = ex.Message });
-            }
-        }
-
-        // GET: api/Vehicle/{id}
-        [HttpGet("{id}")]
-        public ActionResult<Vehicle> Get(string id)
-        {
-            try
-            {
-                var vehicle = GetVehicleById(id);
-                if (vehicle == null)
-                {
-                    return NotFound(new { message = $"Vehicle with license plate '{id}' not found" });
-                }
-
-                // Enrich with customer information
-                var customer = customers.FirstOrDefault(c => c.IdNumber == vehicle.CustomerId);
-                vehicle.Customer = customer;
-
-                return Ok(vehicle);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Error retrieving vehicle", error = ex.Message });
             }
         }
 
