@@ -8,65 +8,64 @@ namespace dotnet_webapi_car_wash.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        // Static list to store customers in memory
         public static List<Customer> customers = new List<Customer>
-{
-    new Customer
-    {
-        IdNumber = "123456789",
-        FullName = "John Doe",
-        Province = "San José",
-        Canton = "Central",
-        District = "Carmen",
-        ExactAddress = "100 metros norte del parque central",
-        Phone = "8888-8888",
-        WashPreference = WashPreference.Weekly
-    },
-    new Customer
-    {
-        IdNumber = "987654321",
-        FullName = "María González",
-        Province = "Alajuela",
-        Canton = "Alajuela",
-        District = "Alajuela",
-        ExactAddress = "200 metros sur de la iglesia",
-        Phone = "7777-7777",
-        WashPreference = WashPreference.Monthly
-    },
-    new Customer
-    {
-        IdNumber = "456789123",
-        FullName = "Carlos Rodríguez",
-        Province = "Cartago",
-        Canton = "Cartago",
-        District = "Oriental",
-        ExactAddress = "Del mall 300 metros este",
-        Phone = "6666-6666",
-        WashPreference = WashPreference.Biweekly
-    },
-    new Customer
-    {
-        IdNumber = "321654987",
-        FullName = "Ana Jiménez",
-        Province = "Heredia",
-        Canton = "Heredia",
-        District = "Heredia",
-        ExactAddress = "Frente al hospital",
-        Phone = "5555-5555",
-        WashPreference = WashPreference.Other
-    },
-    new Customer
-    {
-        IdNumber = "789456123",
-        FullName = "Luis Fernández",
-        Province = "Puntarenas",
-        Canton = "Puntarenas",
-        District = "Puntarenas",
-        ExactAddress = "Cerca del puerto",
-        Phone = "4444-4444",
-        WashPreference = WashPreference.Weekly
-    }
-};
+        {
+            new Customer
+            {
+                IdNumber = "123456789",
+                FullName = "John Doe",
+                Province = "San José",
+                Canton = "Central",
+                District = "Carmen",
+                ExactAddress = "100 metros norte del parque central",
+                Phone = "8888-8888",
+                WashPreference = WashPreference.Weekly
+            },
+            new Customer
+            {
+                IdNumber = "987654321",
+                FullName = "María González",
+                Province = "Alajuela",
+                Canton = "Alajuela",
+                District = "Alajuela",
+                ExactAddress = "200 metros sur de la iglesia",
+                Phone = "7777-7777",
+                WashPreference = WashPreference.Monthly
+            },
+            new Customer
+            {
+                IdNumber = "456789123",
+                FullName = "Carlos Rodríguez",
+                Province = "Cartago",
+                Canton = "Cartago",
+                District = "Oriental",
+                ExactAddress = "Del mall 300 metros este",
+                Phone = "6666-6666",
+                WashPreference = WashPreference.Biweekly
+            },
+            new Customer
+            {
+                IdNumber = "321654987",
+                FullName = "Ana Jiménez",
+                Province = "Heredia",
+                Canton = "Heredia",
+                District = "Heredia",
+                ExactAddress = "Frente al hospital",
+                Phone = "5555-5555",
+                WashPreference = WashPreference.Other
+            },
+            new Customer
+            {
+                IdNumber = "789456123",
+                FullName = "Luis Fernández",
+                Province = "Puntarenas",
+                Canton = "Puntarenas",
+                District = "Puntarenas",
+                ExactAddress = "Cerca del puerto",
+                Phone = "4444-4444",
+                WashPreference = WashPreference.Weekly
+            }
+        };
 
         // GET: api/Customer
         [HttpGet]
