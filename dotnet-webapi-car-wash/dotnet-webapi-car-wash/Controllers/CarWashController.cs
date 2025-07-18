@@ -8,141 +8,133 @@ namespace dotnet_webapi_car_wash.Controllers
     [ApiController]
     public class CarWashController : ControllerBase
     {
-        // Referencias a las listas estáticas de otros controladores
         private static List<Customer> customers = CustomerController.customers;
         private static List<Vehicle> vehicles = VehicleController.vehicles;
 
-        // Static list to store car washes in memory con dato de prueba
         public static List<CarWash> carWashs = new List<CarWash>
-{
-    // Lavados recientes (últimas 2 semanas)
-    new CarWash
-    {
-        IdCarWash = "CW001",
-        VehicleLicensePlate = "ABC123",
-        IdClient = "123456789",
-        IdEmployee = "EMP001",
-        WashType = WashType.Premium,
-        WashStatus = WashStatus.Billed,
-        //CreationDate = DateTime.Now.AddDays(-10),
-        TotalPrice = 25000,
-        Observations = "Cliente satisfecho con el servicio premium"
-    },
-    new CarWash
-    {
-        IdCarWash = "CW002",
-        VehicleLicensePlate = "GHI789",
-        IdClient = "456789123",
-        IdEmployee = "EMP002",
-        WashType = WashType.Basic,
-        WashStatus = WashStatus.Billed,
-        //CreationDate = DateTime.Now.AddDays(-5),
-        TotalPrice = 15000,
-        Observations = "Lavado básico completado"
-    },
-    
-    // Lavados de hace más de un mes (estos clientes necesitan contacto)
-    new CarWash
-    {
-        IdCarWash = "CW003",
-        VehicleLicensePlate = "DEF456",
-        IdClient = "987654321",
-        IdEmployee = "EMP001",
-        WashType = WashType.Deluxe,
-        WashStatus = WashStatus.Billed,
-        //CreationDate = DateTime.Now.AddDays(-45), // Hace 45 días
-        TotalPrice = 30000,
-        Observations = "Lavado deluxe"
-    },
-    new CarWash
-    {
-        IdCarWash = "CW004",
-        VehicleLicensePlate = "JKL012",
-        IdClient = "321654987",
-        IdEmployee = "EMP003",
-        WashType = WashType.LaJoya,
-        WashStatus = WashStatus.Billed,
-        //CreationDate = DateTime.Now.AddDays(-60), // Hace 60 días
-        TotalPrice = 50000,
-        Observations = "Servicio La Joya con tratamiento especial"
-    },
-    new CarWash
-    {
-        IdCarWash = "CW005",
-        VehicleLicensePlate = "PQR678",
-        IdClient = "789456123",
-        IdEmployee = "EMP002",
-        WashType = WashType.Basic,
-        WashStatus = WashStatus.Billed,
-        //CreationDate = DateTime.Now.AddDays(-50), // Hace 50 días
-        TotalPrice = 15000,
-        Observations = "Lavado básico"
-    },
-    
-    // Lavados más antiguos para tener historial
-    new CarWash
-    {
-        IdCarWash = "CW006",
-        VehicleLicensePlate = "ABC123",
-        IdClient = "123456789",
-        IdEmployee = "EMP001",
-        WashType = WashType.Deluxe,
-        WashStatus = WashStatus.Billed,
-       // CreationDate = DateTime.Now.AddDays(-80),
-        TotalPrice = 30000,
-        Observations = "Lavado anterior del mismo vehículo"
-    },
-    new CarWash
-    {
-        IdCarWash = "CW007",
-        VehicleLicensePlate = "MNO345",
-        IdClient = "789456123",
-        IdEmployee = "EMP003",
-        WashType = WashType.Premium,
-        WashStatus = WashStatus.Billed,
-        //CreationDate = DateTime.Now.AddDays(-35), // Hace 35 días
-        TotalPrice = 25000,
-        Observations = "Lavado premium con nano cerámico"
-    },
-    
-    // Lavados en proceso o pendientes
-    new CarWash
-    {
-        IdCarWash = "CW008",
-        VehicleLicensePlate = "GHI789",
-        IdClient = "456789123",
-        IdEmployee = "EMP002",
-        WashType = WashType.Deluxe,
-        WashStatus = WashStatus.InProgress,
-       // CreationDate = DateTime.Now.AddDays(-1),
-        TotalPrice = 30000,
-        Observations = "Lavado en proceso"
-    },
-    new CarWash
-    {
-        IdCarWash = "CW009",
-        VehicleLicensePlate = "DEF456",
-        IdClient = "987654321",
-        IdEmployee = "EMP001",
-        WashType = WashType.LaJoya,
-        WashStatus = WashStatus.Scheduled,
-       // CreationDate = DateTime.Now.AddDays(2), // Programado para el futuro
-        TotalPrice = 50000,
-        Observations = "Lavado La Joya programado"
-    },
-    new CarWash
-    {
-        IdCarWash = "CW010",
-        VehicleLicensePlate = "MNO345",
-        IdClient = "789456123",
-        IdEmployee = "EMP002",
-        WashType = WashType.Basic,
-        WashStatus = WashStatus.Scheduled,
-       // CreationDate = DateTime.Now.AddDays(1), // Programado para mañana
-        TotalPrice = 15000,
-        Observations = "Lavado básico programado"
-    }
-};
+        {
+            new CarWash
+            {
+                IdCarWash = "CW001",
+                VehicleLicensePlate = "ABC123",
+                IdClient = "123456789",
+                IdEmployee = "EMP001",
+                WashType = WashType.Premium,
+                WashStatus = WashStatus.Billed,
+                CreationDate = DateTime.Now.AddDays(-10),
+                TotalPrice = 25000,
+                Observations = "Cliente satisfecho con el servicio premium"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW002",
+                VehicleLicensePlate = "GHI789",
+                IdClient = "456789123",
+                IdEmployee = "EMP002",
+                WashType = WashType.Basic,
+                WashStatus = WashStatus.Billed,
+                CreationDate = DateTime.Now.AddDays(-5),
+                TotalPrice = 15000,
+                Observations = "Lavado básico completado"
+            },
+
+            new CarWash
+            {
+                IdCarWash = "CW003",
+                VehicleLicensePlate = "DEF456",
+                IdClient = "987654321",
+                IdEmployee = "EMP001",
+                WashType = WashType.Deluxe,
+                WashStatus = WashStatus.Billed,
+                CreationDate = DateTime.Now.AddDays(-45),
+                TotalPrice = 30000,
+                Observations = "Lavado deluxe"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW004",
+                VehicleLicensePlate = "JKL012",
+                IdClient = "321654987",
+                IdEmployee = "EMP003",
+                WashType = WashType.LaJoya,
+                WashStatus = WashStatus.Billed,
+                CreationDate = DateTime.Now.AddDays(-60),
+                TotalPrice = 50000,
+                Observations = "Servicio La Joya con tratamiento especial"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW005",
+                VehicleLicensePlate = "PQR678",
+                IdClient = "789456123",
+                IdEmployee = "EMP002",
+                WashType = WashType.Basic,
+                WashStatus = WashStatus.Billed,
+                CreationDate = DateTime.Now.AddDays(-50),
+                TotalPrice = 15000,
+                Observations = "Lavado básico"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW006",
+                VehicleLicensePlate = "ABC123",
+                IdClient = "123456789",
+                IdEmployee = "EMP001",
+                WashType = WashType.Deluxe,
+                WashStatus = WashStatus.Billed,
+                CreationDate = DateTime.Now.AddDays(-80),
+                TotalPrice = 30000,
+                Observations = "Lavado anterior del mismo vehículo"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW007",
+                VehicleLicensePlate = "MNO345",
+                IdClient = "789456123",
+                IdEmployee = "EMP003",
+                WashType = WashType.Premium,
+                WashStatus = WashStatus.Billed,
+                CreationDate = DateTime.Now.AddDays(-35),
+                TotalPrice = 25000,
+                Observations = "Lavado premium con nano cerámico"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW008",
+                VehicleLicensePlate = "GHI789",
+                IdClient = "456789123",
+                IdEmployee = "EMP002",
+                WashType = WashType.Deluxe,
+                WashStatus = WashStatus.InProgress,
+                CreationDate = DateTime.Now.AddDays(-1),
+                TotalPrice = 30000,
+                Observations = "Lavado en proceso"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW009",
+                VehicleLicensePlate = "DEF456",
+                IdClient = "987654321",
+                IdEmployee = "EMP001",
+                WashType = WashType.LaJoya,
+                WashStatus = WashStatus.Scheduled,
+                CreationDate = DateTime.Now.AddDays(2),
+                TotalPrice = 50000,
+                Observations = "Lavado La Joya programado"
+            },
+            new CarWash
+            {
+                IdCarWash = "CW010",
+                VehicleLicensePlate = "MNO345",
+                IdClient = "789456123",
+                IdEmployee = "EMP002",
+                WashType = WashType.Basic,
+                WashStatus = WashStatus.Scheduled,
+                CreationDate = DateTime.Now.AddDays(1),
+                TotalPrice = 15000,
+                Observations = "Lavado básico programado"
+            }
+        };
 
         // GET: api/CarWash
         [HttpGet]
@@ -155,7 +147,6 @@ namespace dotnet_webapi_car_wash.Controllers
                     return NotFound(new { message = "No car washes found" });
                 }
 
-                // Enriquecer con información de cliente y vehículo
                 var enrichedCarWashs = carWashs.Select(cw =>
                 {
                     var customer = customers.FirstOrDefault(c => c.IdNumber == cw.IdClient);
@@ -179,7 +170,6 @@ namespace dotnet_webapi_car_wash.Controllers
                         Vehicle = vehicle
                     };
 
-                    // Asegurar que los precios estén calculados
                     enrichedCarWash.CalculatePrices();
                     return enrichedCarWash;
                 }).ToList();
@@ -216,7 +206,6 @@ namespace dotnet_webapi_car_wash.Controllers
                     ).ToList();
                 }
 
-                // Enriquecer con información de cliente y vehículo
                 var enrichedCarWashs = filteredCarWashs.Select(cw =>
                 {
                     var customer = customers.FirstOrDefault(c => c.IdNumber == cw.IdClient);
@@ -264,7 +253,6 @@ namespace dotnet_webapi_car_wash.Controllers
                     return NotFound(new { message = $"Car wash with ID '{id}' not found" });
                 }
 
-                // Enriquecer con información de cliente y vehículo
                 var customer = customers.FirstOrDefault(c => c.IdNumber == carWash.IdClient);
                 var vehicle = vehicles.FirstOrDefault(v => v.LicensePlate == carWash.VehicleLicensePlate);
 
@@ -288,7 +276,6 @@ namespace dotnet_webapi_car_wash.Controllers
             {
                 var customerCarWashs = carWashs.Where(cw => cw.IdClient == customerId).ToList();
 
-                // Enriquecer con información de cliente y vehículo
                 var customer = customers.FirstOrDefault(c => c.IdNumber == customerId);
                 var enrichedCarWashs = customerCarWashs.Select(cw =>
                 {
@@ -315,7 +302,6 @@ namespace dotnet_webapi_car_wash.Controllers
             {
                 var vehicleCarWashs = carWashs.Where(cw => cw.VehicleLicensePlate == licensePlate).ToList();
 
-                // Enriquecer con información de cliente y vehículo
                 var vehicle = vehicles.FirstOrDefault(v => v.LicensePlate == licensePlate);
                 var enrichedCarWashs = vehicleCarWashs.Select(cw =>
                 {
@@ -347,7 +333,6 @@ namespace dotnet_webapi_car_wash.Controllers
 
                 var validationErrors = new List<string>();
 
-                // Validate required fields
                 if (string.IsNullOrWhiteSpace(carWash.IdCarWash))
                 {
                     validationErrors.Add("Car wash ID is required.");
